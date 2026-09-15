@@ -7,3 +7,4 @@ pydantic
 python-dotenv
 urllib3
 beautifulsoup4
+gunicorn

@@ -3,13 +3,11 @@ import time
 import urllib3
 import requests
 from datetime import datetime
-from playwright.async_api import async_playwright
 from scrapers.base import BaseScraper
 from models import ResultadoConsulta, Infraccion, EstadoActa
 import config
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"
 
 
 class PbaScraper(BaseScraper):
@@ -17,95 +15,43 @@ class PbaScraper(BaseScraper):
     NOMBRE = "Provincia de Buenos Aires"
     URL_SITIO = "https://infraccionesba.gba.gob.ar/consulta-infraccion"
     API_URL = "https://infraccionesba.gba.gob.ar/rest/consultar-infraccion"
+    SITEKEY_STATIC = "6LfjIBAaAAAAAAMu8SInR4M-_GzP3J40I1zJ2vA_"
 
     def __init__(self):
-        self.playwright = None
-        self.browser = None
-        self.context = None
-        self.page = None
         self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
         self.api_key_2captcha = getattr(config, "TWOCAPTCHA_API_KEY", os.getenv("TWOCAPTCHA_API_KEY", ""))
 
-    async def _init_browser(self):
-        self.playwright = await async_playwright().start()
-        self.browser = await self.playwright.chromium.launch(
-            headless=True,
-            args=[
-                "--disable-blink-features=AutomationControlled",
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--single-process"
-            ]
-        )
-        self.context = await self.browser.new_context(
-            viewport={"width": 1366, "height": 768},
-            user_agent=self.user_agent
-        )
-        self.page = await self.context.new_page()
-
-    def _resolver_recaptcha(self, sitekey: str) -> str:
+    def _resolver_recaptcha(self) -> str:
         if not self.api_key_2captcha:
-            print("⚠️ Advertencia: TWOCAPTCHA_API_KEY no encontrada.")
             return ""
 
-        print(f"🔑 Enviando reCAPTCHA de PBA a 2Captcha (Sitekey: {sitekey})...")
         url_in = "http://2captcha.com/in.php"
         payload = {
             "key": self.api_key_2captcha,
             "method": "userrecaptcha",
-            "googlekey": sitekey,
+            "googlekey": self.SITEKEY_STATIC,
             "pageurl": self.URL_SITIO,
             "json": 1
         }
         res = requests.post(url_in, data=payload, timeout=15).json()
         if res.get("status") != 1:
-            print(f"❌ Error al enviar reCAPTCHA a 2Captcha: {res}")
             return ""
 
         request_id = res.get("request")
         url_res = f"http://2captcha.com/res.php?key={self.api_key_2captcha}&action=get&id={request_id}&json=1"
 
-        print("⏳ Esperando resolución del captcha para PBA...")
-        for i in range(30):
+        for _ in range(25):
             time.sleep(4)
             chk = requests.get(url_res, timeout=15).json()
             if chk.get("status") == 1:
-                print(f"✅ reCAPTCHA de PBA resuelto en {(i+1)*4}s por 2Captcha.")
                 return chk.get("request")
-            elif chk.get("request") != "CAPCHA_NOT_READY":
-                print(f"❌ Error devuelto por 2Captcha: {chk.get('request')}")
-                break
-
-        print("❌ Timeout esperando respuesta de 2Captcha.")
         return ""
 
     async def consultar_por_patente(self, patente: str) -> ResultadoConsulta:
-        await self._init_browser()
         try:
-            print(f"\nMunicipio: {self.MUNICIPIO} | Patente: {patente.upper()}")
-            print(f"Navegando a {self.URL_SITIO} para extraer sitekey...")
+            print(f"\nMunicipio: {self.MUNICIPIO} | Patente: {patente.upper()} (requests)")
 
-            await self.page.goto(self.URL_SITIO, wait_until="domcontentloaded", timeout=45000)
-            await self.page.wait_for_timeout(2000)
-
-            sitekey = None
-            iframe_elem = await self.page.query_selector("iframe[src*='recaptcha']")
-            if iframe_elem:
-                src = await iframe_elem.get_attribute("src")
-                if "k=" in src:
-                    sitekey = src.split("k=")[1].split("&")[0]
-
-            if not sitekey:
-                captcha_div = await self.page.query_selector("[data-sitekey], .g-recaptcha")
-                if captcha_div:
-                    sitekey = await captcha_div.get_attribute("data-sitekey")
-
-            if not sitekey:
-                sitekey = "6LfjIBAaAAAAAAMu8SInR4M-_GzP3J40I1zJ2vA_"
-
-            token_recaptcha = self._resolver_recaptcha(sitekey)
+            token_recaptcha = self._resolver_recaptcha()
             if not token_recaptcha:
                 return ResultadoConsulta(
                     municipio=self.MUNICIPIO,
@@ -127,7 +73,6 @@ class PbaScraper(BaseScraper):
                 "Referer": self.URL_SITIO
             }
 
-            print("Consultando API REST de PBA con token resuelto...")
             res = requests.get(self.API_URL, params=params, headers=headers, timeout=20, verify=False)
 
             if res.status_code != 200:
@@ -214,19 +159,9 @@ class PbaScraper(BaseScraper):
                 error=str(e),
                 tiene_infracciones=False
             )
-        finally:
-            await self.close()
 
     async def consultar_por_dni(self, dni: str, tipo_doc: str = "DNI") -> ResultadoConsulta:
         return ResultadoConsulta(municipio=self.MUNICIPIO, dni=dni, error="No implementado", tiene_infracciones=False)
 
     async def close(self):
-        try:
-            if self.context:
-                await self.context.close()
-            if self.browser:
-                await self.browser.close()
-            if self.playwright:
-                await self.playwright.stop()
-        except Exception:
-            pass
+        pass

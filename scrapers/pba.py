@@ -9,6 +9,7 @@ from models import ResultadoConsulta, Infraccion, EstadoActa
 import config
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"
 
 
 class PbaScraper(BaseScraper):
@@ -28,9 +29,15 @@ class PbaScraper(BaseScraper):
     async def _init_browser(self):
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
-            headless=getattr(config, "HEADLESS", False),
-            slow_mo=getattr(config, "SLOW_MO", 500),
-            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--single-process"
+            ]
         )
         self.context = await self.browser.new_context(
             viewport={"width": 1366, "height": 768},
@@ -83,7 +90,6 @@ class PbaScraper(BaseScraper):
             await self.page.goto(self.URL_SITIO, wait_until="domcontentloaded", timeout=45000)
             await self.page.wait_for_timeout(2000)
 
-            # Extraer sitekey directamente del iframe renderizado en la página
             sitekey = None
             iframe_elem = await self.page.query_selector("iframe[src*='recaptcha']")
             if iframe_elem:
@@ -92,7 +98,6 @@ class PbaScraper(BaseScraper):
                     sitekey = src.split("k=")[1].split("&")[0]
 
             if not sitekey:
-                # Búsqueda alternativa en atributos de captcha del DOM
                 captcha_div = await self.page.query_selector("[data-sitekey], .g-recaptcha")
                 if captcha_div:
                     sitekey = await captcha_div.get_attribute("data-sitekey")

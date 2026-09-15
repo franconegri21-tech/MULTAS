@@ -44,8 +44,13 @@ class ConsolidadorInfracciones:
         print(f"Jurisdicciones activas: {', '.join(self.municipios)}")
         print(f"============================================================\n")
 
-        tareas = [self.consultar_municipio(m, patente) for m in self.municipios]
-        resultados = await asyncio.gather(*tareas)
+        # EJECUCIÓN SECUENCIAL (Uno tras otro) para no exceder los 512 MB de RAM en Render
+        resultados = []
+        for m in self.municipios:
+            print(f"Ejecutando scraper para: {m.upper()}...")
+            res = await self.consultar_municipio(m, patente)
+            resultados.append(res)
+
         return resultados
 
     def generar_reporte_pdf(self, patente: str, resultados: List[ResultadoConsulta], ruta_destino: str = None) -> str:

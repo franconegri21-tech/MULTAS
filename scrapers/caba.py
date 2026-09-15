@@ -8,6 +8,7 @@ from models import ResultadoConsulta, Infraccion, EstadoActa
 import config
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = "0"
 
 
 class CabaScraper(BaseScraper):
@@ -28,9 +29,15 @@ class CabaScraper(BaseScraper):
     async def _init_browser(self):
         self.playwright = await async_playwright().start()
         self.browser = await self.playwright.chromium.launch(
-            headless=getattr(config, "HEADLESS", False),
-            slow_mo=getattr(config, "SLOW_MO", 500),
-            args=["--disable-blink-features=AutomationControlled", "--no-sandbox"]
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-setuid-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--single-process"
+            ]
         )
         self.context = await self.browser.new_context(
             viewport={"width": 1366, "height": 768},

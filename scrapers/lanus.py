@@ -1,7 +1,9 @@
+import os
+import time
 import requests
 from scrapers.base import BaseScraper
 from models import ResultadoConsulta, Infraccion, EstadoActa
-from captcha import CaptchaSolver
+import config
 
 
 class LanusScraper(BaseScraper):
@@ -12,17 +14,34 @@ class LanusScraper(BaseScraper):
     SITEKEY_STATIC = "6LfjIBAaAAAAAAMu8SInR4M-_GzP3J40I1zJ2vA_"
 
     def __init__(self):
-        self.captcha_solver = CaptchaSolver()
+        self.session = requests.Session()
+        self.api_key_2captcha = getattr(config, "TWOCAPTCHA_API_KEY", os.getenv("TWOCAPTCHA_API_KEY", ""))
 
-    def _solve_captcha(self):
-        try:
-            return self.captcha_solver.solve_recaptcha_v2(
-                site_key=self.SITEKEY_STATIC,
-                page_url=self.URL_PAGE
-            )
-        except Exception as e:
-            print(f"Error resolviendo CAPTCHA Lanús: {e}")
-            return None
+    def _solve_captcha(self) -> str:
+        if not self.api_key_2captcha:
+            return ""
+
+        url_in = "http://2captcha.com/in.php"
+        payload = {
+            "key": self.api_key_2captcha,
+            "method": "userrecaptcha",
+            "googlekey": self.SITEKEY_STATIC,
+            "pageurl": self.URL_PAGE,
+            "json": 1
+        }
+        res = self.session.post(url_in, data=payload, timeout=15).json()
+        if res.get("status") != 1:
+            return ""
+
+        request_id = res.get("request")
+        url_res = f"http://2captcha.com/res.php?key={self.api_key_2captcha}&action=get&id={request_id}&json=1"
+
+        for _ in range(25):
+            time.sleep(4)
+            chk = self.session.get(url_res, timeout=15).json()
+            if chk.get("status") == 1:
+                return chk.get("request")
+        return ""
 
     def _mapear_infraccion(self, inf: dict) -> Infraccion:
         acta = str(inf.get("acta", "S/N"))
@@ -77,10 +96,11 @@ class LanusScraper(BaseScraper):
             headers = {
                 "Accept": "application/json",
                 "X-Requested-With": "XMLHttpRequest",
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                "Referer": "https://consulta-lanus.infratrack.com.ar/"
             }
 
-            res = requests.get(self.API_URL, params=params, headers=headers, timeout=20)
+            res = self.session.get(self.API_URL, params=params, headers=headers, timeout=20)
             if res.status_code != 200:
                 return ResultadoConsulta(
                     municipio=self.MUNICIPIO,

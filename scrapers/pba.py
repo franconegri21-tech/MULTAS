@@ -18,11 +18,13 @@ class PbaScraper(BaseScraper):
     SITEKEY_STATIC = "6LfjIBAaAAAAAAMu8SInR4M-_GzP3J40I1zJ2vA_"
 
     def __init__(self):
+        self.session = requests.Session()
         self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
         self.api_key_2captcha = getattr(config, "TWOCAPTCHA_API_KEY", os.getenv("TWOCAPTCHA_API_KEY", ""))
 
     def _resolver_recaptcha(self) -> str:
         if not self.api_key_2captcha:
+            print("⚠️ Error: TWOCAPTCHA_API_KEY no configurada.")
             return ""
 
         url_in = "http://2captcha.com/in.php"
@@ -33,8 +35,9 @@ class PbaScraper(BaseScraper):
             "pageurl": self.URL_SITIO,
             "json": 1
         }
-        res = requests.post(url_in, data=payload, timeout=15).json()
+        res = self.session.post(url_in, data=payload, timeout=15).json()
         if res.get("status") != 1:
+            print(f"❌ Error al solicitar captcha en 2Captcha: {res}")
             return ""
 
         request_id = res.get("request")
@@ -42,7 +45,7 @@ class PbaScraper(BaseScraper):
 
         for _ in range(25):
             time.sleep(4)
-            chk = requests.get(url_res, timeout=15).json()
+            chk = self.session.get(url_res, timeout=15).json()
             if chk.get("status") == 1:
                 return chk.get("request")
         return ""
@@ -51,12 +54,19 @@ class PbaScraper(BaseScraper):
         try:
             print(f"\nMunicipio: {self.MUNICIPIO} | Patente: {patente.upper()} (requests)")
 
+            # Inicializar cookies de sesión
+            headers_base = {
+                "User-Agent": self.user_agent,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+            self.session.get(self.URL_SITIO, headers=headers_base, timeout=15, verify=False)
+
             token_recaptcha = self._resolver_recaptcha()
             if not token_recaptcha:
                 return ResultadoConsulta(
                     municipio=self.MUNICIPIO,
                     patente=patente.upper(),
-                    error="No se pudo resolver el captcha de PBA",
+                    error="No se pudo resolver el captcha de PBA (Verificar API Key de 2Captcha)",
                     tiene_infracciones=False
                 )
 
@@ -67,13 +77,14 @@ class PbaScraper(BaseScraper):
                 "paginaActual": 1
             }
 
-            headers = {
+            headers_api = {
                 "User-Agent": self.user_agent,
                 "Accept": "application/json, text/plain, */*",
-                "Referer": self.URL_SITIO
+                "Referer": self.URL_SITIO,
+                "Origin": "https://infraccionesba.gba.gob.ar"
             }
 
-            res = requests.get(self.API_URL, params=params, headers=headers, timeout=20, verify=False)
+            res = self.session.get(self.API_URL, params=params, headers=headers_api, timeout=20, verify=False)
 
             if res.status_code != 200:
                 return ResultadoConsulta(

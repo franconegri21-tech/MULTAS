@@ -1,0 +1,20 @@
+[
+  {
+    "acta": "02-003-02062821-3",
+    "motivo": "Art. 22: No respetar luces de semáforo o barrera paso de paso a nivel",
+    "importe": "$340.650,00",
+    "estado": "EstadoActa.CON_DEUDA",
+    "lugar": "Juzgado Provincial La Plata",
+    "fecha": "22/06/2026",
+    "observaciones": null
+  },
+  {
+    "acta": "02-003-02084942-7",
+    "motivo": "Art. 28: Por no respetar los límites reglamentarios de velocidad previstos.",
+    "importe": "$170.325,00",
+    "estado": "EstadoActa.CON_DEUDA",
+    "lugar": "Juzgado Provincial La Plata",
+    "fecha": "07/07/2026",
+    "observaciones": null
+  }
+]

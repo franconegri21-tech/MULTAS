@@ -1,0 +1,1523 @@
+<!DOCTYPE html><html lang="es"><head>
+    <title>Consulta Infracciones</title>
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.css">
+    <link rel="apple-touch-icon-precomposed" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/images/close.png">
+    <link rel="apple-touch-icon-precomposed" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/images/loading.gif">
+    <link rel="apple-touch-icon-precomposed" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/images/next.png">
+    <link rel="apple-touch-icon-precomposed" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/images/prev.png">
+    <link rel="stylesheet" href="./css/pagination.css">
+    <style type="text/css">
+        [data-toggle="collapse"] {
+            cursor: pointer;
+        }
+
+        [data-toggle="collapse"] .fa:before {
+            content: "\f106";
+        }
+
+        [data-toggle="collapse"].collapsed .fa:before {
+            content: "\f107";
+        }
+
+        .payment-method-container {
+            justify-content: space-evenly;
+        }
+
+        .payment-method-container .payment_method {
+            width: 30%;
+            max-width: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+            margin: 10px 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .payment-method-container .payment_method img {
+            width: 50px;
+        }
+
+        .payment-institution {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1; /* Permite que el contenedor crezca para centrar el contenido */
+        }
+
+        .logo-payment-institution {
+            width: 150px;
+            height: auto;
+        }
+
+        .col-form-label {
+            font-size: 18px;
+        }
+
+        .custom-file-label {
+            font-size: 18px;
+        }
+
+        .custom-file {
+            width: auto;
+            display: inline-flex;
+        }
+    </style>
+    <script type="text/javascript" async="" charset="utf-8" src="https://www.gstatic.com/recaptcha/releases/xg_pWYS8-HRESiV6Rdg4aY_R/recaptcha__es_419.js" crossorigin="anonymous" integrity="sha384-Orx+B0MfT6eK0auA4NoOWrsIntqQrsttytijcmC0UrhzyML57Zwv8PxoQS33zeRf"></script><script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script src="https://unpkg.com/vue@2.6.10/dist/vue.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=vueRecaptchaApiLoaded&amp;render=explicit" async="" defer=""></script>
+    <script src="https://unpkg.com/vue-recaptcha@^1/dist/vue-recaptcha.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script><style>:root{--swal2-outline: 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-container-padding: 0.625em;--swal2-backdrop: rgba(0, 0, 0, 0.4);--swal2-backdrop-transition: background-color 0.15s;--swal2-width: 32em;--swal2-padding: 0 0 1.25em;--swal2-border: none;--swal2-border-radius: 0.3125rem;--swal2-background: white;--swal2-color: #545454;--swal2-show-animation: swal2-show 0.3s;--swal2-hide-animation: swal2-hide 0.15s forwards;--swal2-icon-zoom: 1;--swal2-title-padding: 0.8em 1em 0;--swal2-html-container-padding: 1em 1.6em 0.3em;--swal2-input-border: 1px solid #d9d9d9;--swal2-input-border-radius: 0.1875em;--swal2-input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-background: transparent;--swal2-input-transition: border-color 0.2s, box-shadow 0.2s;--swal2-input-hover-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-focus-border: 1px solid #b4dbed;--swal2-input-focus-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-progress-step-background: #add8e6;--swal2-validation-message-background: #f0f0f0;--swal2-validation-message-color: #666;--swal2-footer-border-color: #eee;--swal2-footer-background: transparent;--swal2-footer-color: inherit;--swal2-timer-progress-bar-background: rgba(0, 0, 0, 0.3);--swal2-close-button-position: initial;--swal2-close-button-inset: auto;--swal2-close-button-font-size: 2.5em;--swal2-close-button-color: #ccc;--swal2-close-button-transition: color 0.2s, box-shadow 0.2s;--swal2-close-button-outline: initial;--swal2-close-button-box-shadow: inset 0 0 0 3px transparent;--swal2-close-button-focus-box-shadow: inset var(--swal2-outline);--swal2-close-button-hover-transform: none;--swal2-actions-justify-content: center;--swal2-actions-width: auto;--swal2-actions-margin: 1.25em auto 0;--swal2-actions-padding: 0;--swal2-actions-border-radius: 0;--swal2-actions-background: transparent;--swal2-action-button-transition: background-color 0.2s, box-shadow 0.2s;--swal2-action-button-hover: black 10%;--swal2-action-button-active: black 10%;--swal2-confirm-button-box-shadow: none;--swal2-confirm-button-border-radius: 0.25em;--swal2-confirm-button-background-color: #7066e0;--swal2-confirm-button-color: #fff;--swal2-deny-button-box-shadow: none;--swal2-deny-button-border-radius: 0.25em;--swal2-deny-button-background-color: #dc3741;--swal2-deny-button-color: #fff;--swal2-cancel-button-box-shadow: none;--swal2-cancel-button-border-radius: 0.25em;--swal2-cancel-button-background-color: #6e7881;--swal2-cancel-button-color: #fff;--swal2-toast-show-animation: swal2-toast-show 0.5s;--swal2-toast-hide-animation: swal2-toast-hide 0.1s forwards;--swal2-toast-border: none;--swal2-toast-box-shadow: 0 0 1px hsl(0deg 0% 0% / 0.075), 0 1px 2px hsl(0deg 0% 0% / 0.075), 1px 2px 4px hsl(0deg 0% 0% / 0.075), 1px 3px 8px hsl(0deg 0% 0% / 0.075), 2px 4px 16px hsl(0deg 0% 0% / 0.075)}[data-swal2-theme=dark]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}@media(prefers-color-scheme: dark){[data-swal2-theme=auto]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:auto}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px var(--swal2-backdrop)}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{inset:0 auto auto 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{inset:0 0 auto auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{inset:0 auto auto 0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{inset:50% auto auto 0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{inset:50% auto auto 50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{inset:50% 0 auto auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{inset:auto auto 0 0}body.swal2-toast-shown .swal2-container.swal2-bottom{inset:auto auto 0 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{inset:auto 0 0 auto}@media print{body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown) .swal2-container{position:static !important}}div:where(.swal2-container){display:grid;position:fixed;z-index:1060;inset:0;box-sizing:border-box;grid-template-areas:"top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:var(--swal2-container-padding);overflow-x:hidden;transition:var(--swal2-backdrop-transition);-webkit-overflow-scrolling:touch}div:where(.swal2-container).swal2-backdrop-show,div:where(.swal2-container).swal2-noanimation{background:var(--swal2-backdrop)}div:where(.swal2-container).swal2-backdrop-hide{background:rgba(0,0,0,0) !important}div:where(.swal2-container).swal2-top-start,div:where(.swal2-container).swal2-center-start,div:where(.swal2-container).swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}div:where(.swal2-container).swal2-top,div:where(.swal2-container).swal2-center,div:where(.swal2-container).swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}div:where(.swal2-container).swal2-top-end,div:where(.swal2-container).swal2-center-end,div:where(.swal2-container).swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}div:where(.swal2-container).swal2-top-start>.swal2-popup{align-self:start}div:where(.swal2-container).swal2-top>.swal2-popup{grid-column:2;place-self:start center}div:where(.swal2-container).swal2-top-end>.swal2-popup,div:where(.swal2-container).swal2-top-right>.swal2-popup{grid-column:3;place-self:start end}div:where(.swal2-container).swal2-center-start>.swal2-popup,div:where(.swal2-container).swal2-center-left>.swal2-popup{grid-row:2;align-self:center}div:where(.swal2-container).swal2-center>.swal2-popup{grid-column:2;grid-row:2;place-self:center center}div:where(.swal2-container).swal2-center-end>.swal2-popup,div:where(.swal2-container).swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;place-self:center end}div:where(.swal2-container).swal2-bottom-start>.swal2-popup,div:where(.swal2-container).swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}div:where(.swal2-container).swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;place-self:end center}div:where(.swal2-container).swal2-bottom-end>.swal2-popup,div:where(.swal2-container).swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;place-self:end end}div:where(.swal2-container).swal2-grow-row>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}div:where(.swal2-container).swal2-grow-column>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}div:where(.swal2-container).swal2-no-transition{transition:none !important}div:where(.swal2-container)[popover]{width:auto;border:0}div:where(.swal2-container) div:where(.swal2-popup){display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:var(--swal2-width);max-width:100%;padding:var(--swal2-padding);border:var(--swal2-border);border-radius:var(--swal2-border-radius);background:var(--swal2-background);color:var(--swal2-color);font-family:inherit;font-size:1rem}div:where(.swal2-container) div:where(.swal2-popup):focus{outline:none}div:where(.swal2-container) div:where(.swal2-popup).swal2-loading{overflow-y:hidden}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable{cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable div:where(.swal2-icon){cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging{cursor:grabbing}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging div:where(.swal2-icon){cursor:grabbing}div:where(.swal2-container) h2:where(.swal2-title){position:relative;max-width:100%;margin:0;padding:var(--swal2-title-padding);color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;overflow-wrap:break-word;cursor:initial}div:where(.swal2-container) div:where(.swal2-actions){display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:var(--swal2-actions-justify-content);width:var(--swal2-actions-width);margin:var(--swal2-actions-margin);padding:var(--swal2-actions-padding);border-radius:var(--swal2-actions-border-radius);background:var(--swal2-actions-background)}div:where(.swal2-container) div:where(.swal2-loader){display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}div:where(.swal2-container) button:where(.swal2-styled){margin:.3125em;padding:.625em 1.1em;transition:var(--swal2-action-button-transition);border:none;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}div:where(.swal2-container) button:where(.swal2-styled):not([disabled]){cursor:pointer}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){border-radius:var(--swal2-confirm-button-border-radius);background:initial;background-color:var(--swal2-confirm-button-background-color);box-shadow:var(--swal2-confirm-button-box-shadow);color:var(--swal2-confirm-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):hover{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):active{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny){border-radius:var(--swal2-deny-button-border-radius);background:initial;background-color:var(--swal2-deny-button-background-color);box-shadow:var(--swal2-deny-button-box-shadow);color:var(--swal2-deny-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):hover{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):active{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel){border-radius:var(--swal2-cancel-button-border-radius);background:initial;background-color:var(--swal2-cancel-button-background-color);box-shadow:var(--swal2-cancel-button-box-shadow);color:var(--swal2-cancel-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):hover{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):active{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):focus-visible{outline:none;box-shadow:var(--swal2-action-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-styled)[disabled]:not(.swal2-loading){opacity:.4}div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-footer){margin:1em 0 0;padding:1em 1em 0;border-top:1px solid var(--swal2-footer-border-color);background:var(--swal2-footer-background);color:var(--swal2-footer-color);font-size:1em;text-align:center;cursor:initial}div:where(.swal2-container) .swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:var(--swal2-border-radius);border-bottom-left-radius:var(--swal2-border-radius)}div:where(.swal2-container) div:where(.swal2-timer-progress-bar){width:100%;height:.25em;background:var(--swal2-timer-progress-bar-background)}div:where(.swal2-container) img:where(.swal2-image){max-width:100%;margin:2em auto 1em;cursor:initial}div:where(.swal2-container) button:where(.swal2-close){position:var(--swal2-close-button-position);inset:var(--swal2-close-button-inset);z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:var(--swal2-close-button-transition);border:none;border-radius:var(--swal2-border-radius);outline:var(--swal2-close-button-outline);background:rgba(0,0,0,0);color:var(--swal2-close-button-color);font-family:monospace;font-size:var(--swal2-close-button-font-size);cursor:pointer;justify-self:end}div:where(.swal2-container) button:where(.swal2-close):hover{transform:var(--swal2-close-button-hover-transform);background:rgba(0,0,0,0);color:#f27474}div:where(.swal2-container) button:where(.swal2-close):focus-visible{outline:none;box-shadow:var(--swal2-close-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-html-container){z-index:1;justify-content:center;margin:0;padding:var(--swal2-html-container-padding);overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;overflow-wrap:break-word;word-break:break-word;cursor:initial}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea),div:where(.swal2-container) select:where(.swal2-select),div:where(.swal2-container) div:where(.swal2-radio),div:where(.swal2-container) label:where(.swal2-checkbox){margin:1em 2em 3px}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea){box-sizing:border-box;width:auto;transition:var(--swal2-input-transition);border:var(--swal2-input-border);border-radius:var(--swal2-input-border-radius);background:var(--swal2-input-background);box-shadow:var(--swal2-input-box-shadow);color:inherit;font-size:1.125em}div:where(.swal2-container) input:where(.swal2-input).swal2-inputerror,div:where(.swal2-container) input:where(.swal2-file).swal2-inputerror,div:where(.swal2-container) textarea:where(.swal2-textarea).swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}div:where(.swal2-container) input:where(.swal2-input):hover,div:where(.swal2-container) input:where(.swal2-file):hover,div:where(.swal2-container) textarea:where(.swal2-textarea):hover{box-shadow:var(--swal2-input-hover-box-shadow)}div:where(.swal2-container) input:where(.swal2-input):focus,div:where(.swal2-container) input:where(.swal2-file):focus,div:where(.swal2-container) textarea:where(.swal2-textarea):focus{border:var(--swal2-input-focus-border);outline:none;box-shadow:var(--swal2-input-focus-box-shadow)}div:where(.swal2-container) input:where(.swal2-input)::placeholder,div:where(.swal2-container) input:where(.swal2-file)::placeholder,div:where(.swal2-container) textarea:where(.swal2-textarea)::placeholder{color:#ccc}div:where(.swal2-container) .swal2-range{margin:1em 2em 3px;background:var(--swal2-background)}div:where(.swal2-container) .swal2-range input{width:80%}div:where(.swal2-container) .swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}div:where(.swal2-container) .swal2-range input,div:where(.swal2-container) .swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}div:where(.swal2-container) .swal2-input{height:2.625em;padding:0 .75em}div:where(.swal2-container) .swal2-file{width:75%;margin-right:auto;margin-left:auto;background:var(--swal2-input-background);font-size:1.125em}div:where(.swal2-container) .swal2-textarea{height:6.75em;padding:.75em}div:where(.swal2-container) .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:var(--swal2-input-background);color:inherit;font-size:1.125em}div:where(.swal2-container) .swal2-radio,div:where(.swal2-container) .swal2-checkbox{align-items:center;justify-content:center;background:var(--swal2-background);color:inherit}div:where(.swal2-container) .swal2-radio label,div:where(.swal2-container) .swal2-checkbox label{margin:0 .6em;font-size:1.125em}div:where(.swal2-container) .swal2-radio input,div:where(.swal2-container) .swal2-checkbox input{flex-shrink:0;margin:0 .4em}div:where(.swal2-container) label:where(.swal2-input-label){display:flex;justify-content:center;margin:1em auto 0}div:where(.swal2-container) div:where(.swal2-validation-message){align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:var(--swal2-validation-message-background);color:var(--swal2-validation-message-color);font-size:1em;font-weight:300}div:where(.swal2-container) div:where(.swal2-validation-message)::before{content:"!";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}div:where(.swal2-container) .swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}div:where(.swal2-container) .swal2-progress-steps li{display:inline-block;position:relative}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:var(--swal2-progress-step-background);color:#fff}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:var(--swal2-progress-step-background)}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}div:where(.swal2-icon){position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;zoom:var(--swal2-icon-zoom);border:.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}div:where(.swal2-icon) .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}div:where(.swal2-icon).swal2-error{border-color:#f27474;color:#f27474}div:where(.swal2-icon).swal2-error .swal2-x-mark{position:relative;flex-grow:1}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}div:where(.swal2-icon).swal2-warning{border-color:#f8bb86;color:#f8bb86}div:where(.swal2-icon).swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}div:where(.swal2-icon).swal2-info{border-color:#3fc3ee;color:#3fc3ee}div:where(.swal2-icon).swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}div:where(.swal2-icon).swal2-question{border-color:#87adbd;color:#87adbd}div:where(.swal2-icon).swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}div:where(.swal2-icon).swal2-success{border-color:#a5dc86;color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;border-radius:50%}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}div:where(.swal2-icon).swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}div:where(.swal2-icon).swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:var(--swal2-show-animation)}.swal2-hide{animation:var(--swal2-hide-animation)}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;border:var(--swal2-toast-border);background:var(--swal2-background);box-shadow:var(--swal2-toast-box-shadow);pointer-events:auto}.swal2-toast>*{grid-column:2}.swal2-toast h2:where(.swal2-title){margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-toast .swal2-loading{justify-content:center}.swal2-toast input:where(.swal2-input){height:2em;margin:.5em;font-size:1em}.swal2-toast .swal2-validation-message{font-size:1em}.swal2-toast div:where(.swal2-footer){margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-toast button:where(.swal2-close){grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-toast div:where(.swal2-html-container){margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-toast div:where(.swal2-html-container):empty{padding:0}.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-toast div:where(.swal2-actions){justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-toast button:where(.swal2-styled){margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;border-radius:50%}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}.swal2-toast.swal2-show{animation:var(--swal2-toast-show-animation)}.swal2-toast.swal2-hide{animation:var(--swal2-toast-hide-animation)}@keyframes swal2-show{0%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}100%{transform:translate3d(0, 0, 0) scale(1);opacity:1}}@keyframes swal2-hide{0%{transform:translate3d(0, 0, 0) scale(1);opacity:1}100%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}</style>
+    <script src="https://unpkg.com/vuelidate@0.7.7/dist/vuelidate.min.js"></script>
+    <script src="https://unpkg.com/vuelidate@0.7.7/dist/validators.min.js"></script>
+<script src="https://api.epagos.com.ar/quickstart/epagos.min.js" async=""></script><script id="NETPagos" src="https://netpagos-sdk.provincianet.com.ar/sdk.js?version=1787254363268&amp;api_key=IOyOiBDzvdojwcef2RKgg4tPcfShHer4ARD7gvItyWB2cCuA30" async=""></script></head>
+
+<body class="w-100">
+    <div id="app"><header><nav class="navbar navbar-dark p-4" style="background-color: rgb(50, 182, 233);"><div class="container-sm pl-md-5 pr-md-5 mb-1 mt-1"><a href="#" class="navbar-brand"><img height="80" width="auto" src="images/logo_lanusBco.png" alt="images/logo_lanusBco.png"></a></div></nav></header> <div style="font-size: 18px; font-weight: 700; width: 100%; display: flex; justify-content: center; align-items: center;"><ul class="mb-0"><p>
+                    “Error al procesar las infracciones. Por favor, comuníquese con el Tribunal de Faltas al 
+                    <span> 011 4357-5146 o 4357-5100 internos 7285/7283</span>.“
+                </p></ul></div> <div class="container-sm pl-md-5 pr-md-5 mb-5"><section class="mt-5"><div class="card border-left-0 border-right-0 border-bottom-0"><div class="card-header text-center text-white text-capitalize align-middle" style="background-color: rgb(50, 182, 233);"><h6 class="mb-0 font-weight-bold">Consulta de Infracciones</h6></div> <div class="card-body"><!----> <!----> <!----> <!----> <!----> <ul id="pills-tab" role="tablist" class="nav nav-pills mb-3 d-flex bd-highlight border-top"><li role="presentation" class="p-2 flex-fill bd-highlight nav-item text-center"><a id="pillsDominioTab" data-toggle="pill" href="#pills-dominio" role="tab" aria-controls="pills-home" aria-selected="true" class="nav-link active font-weight-bold rounded-lg text-white" style="background-color: rgb(50, 182, 233);">
+                                    Por Dominio
+                                </a></li> <li role="presentation" class="p-2 flex-fill bd-highlight nav-item text-center"><a id="pillsDocumentoTab" data-toggle="pill" href="#pills-documento" role="tab" aria-controls="pills-profile" aria-selected="false" class="nav-link font-weight-bold rounded-lg text-white" style="background-color: rgb(64, 64, 65);">
+                                    Por Documento
+                                </a></li></ul> <div id="pills-tabContent" class="tab-content"><div id="pills-dominio" role="tabpanel" aria-labelledby="pills-home-tab" class="tab-pane fade show active"><div style="height: 230px;"><div class="form-group"><label for="patente" class="font-weight-bold">
+                                            Numero de Patente
+                                        </label> <input type="text" id="patente" aria-describedby="Patente" class="form-control" style=""> <small id="patente_errors" class="form-text text-muted">
+                                            No debe contener símbolos especiales ni espacios.
+                                        </small></div></div></div> <div id="pills-documento" role="tabpanel" aria-labelledby="pills-profile-tab" class="tab-pane fade"><div style="height: 220px;"><div class="form-group"><label for="tipo_documento" class="font-weight-bold">
+                                            Tipo de documento
+                                        </label> <select id="tipo_documento" class="form-control"><option>DNI</option> <option>CUIT</option> <option>LI</option> <option>PASAPORTE</option> <option>LE</option> <option>CEDULA</option> <option>EXTRANJERO</option> <option>LICENCIA CONDUCIR</option></select></div> <div class="form-group"><label for="numero_documento" class="font-weight-bold">
+                                            Numero de Documento
+                                        </label> <input type="text" id="numero_documento" aria-describedby="Número documento" placeholder="Ej:12333222" class="form-control" style=""> <small id="numero_documento_errors" class="form-text text-muted">
+                                            No debe contener símbolos especiales ni espacios.
+                                        </small></div></div></div> <p class="text-secondary text-center mb-3"><strong><em></em></strong></p> <p class="text-secondary text-center mb-4"><em>
+                                    Tener en cuenta que pueden obtenerse distintos resultados al consultar por DNI o por Patente
+                                </em></p> <div class="row m-2"><div class="col-12"><div id="captchat" class="d-flex justify-content-around align-items-center"><div><div style="width: 304px; height: 78px;"><div><iframe title="reCAPTCHA" width="304" height="78" role="presentation" name="a-21siiqy5zzrj" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6LcMR6gZAAAAACdq_y61ZBsOVCZVR2zb3lzk7rAZ&amp;co=aHR0cHM6Ly9jb25zdWx0YS13ZWIuaW5mcmF0cmFjay5jb20uYXI6NDQz&amp;hl=es-419&amp;v=xg_pWYS8-HRESiV6Rdg4aY_R&amp;size=normal&amp;anchor-ms=20000&amp;execute-ms=30000&amp;cb=he79vo67mz9p"></iframe></div><textarea id="g-recaptcha-response" name="g-recaptcha-response" class="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding: 0px; resize: none;">03AFcWeA7AuctpkiHmxaYUe5tFgGNuBftNo_2o84H_7UgVxbK3nBaCLK58Wv-msX3EAKjVUroqRaLFOwJoGydTr0gn1nfnpax0UUkKxwQukiGpKRXcyhtAA0rG8C0MO8syU4ZfavEGLhSZ_XfH4wdVmQfhbwdy4Caaj0TAiRvw5WbPy57KUtsiBnPDhk9qnCTqKT4nm2B87bG-hMpefzTdVHgmysXwlRu8ft-uJdyAX3Im8n7G8rRaJlCUu-gmVsA7exHIyYfLa2qYEg0kv6tM8buCHNGvUYBDqvUgJQngTQGjWsW8Qsqe_XDjHQKy-XrLg82PZuY-_-cqIy-31Vsf3uRthBXsavCTWxDvqbgDKost_PCDfVwUC9aTxcVm4eAaojHNFtiQLHC4RCHKpunX0brqVtlk-Q442SSch4zK-OaCrGWUwj8-dlhdH0tvJN9mtzt4WrHy3deHBO7ijQKVr-jGXS753lz7l29m2TTZHYqUMW_YwSvtW0y51p1ABJbUMt97xGC-V1DlpHW_ZQxrRF8BY2hLZRHiRsxFCxc3G2Sf74hlvaWlsd_YcRqedUL_aB9PdW5z-PUhF8GWpCxSAI9HZUdQHLnV6LfS8MprgfI6-D93m0MYcKsTFsJQz7Vf6aUUUI5dM0KWewZToxZIxmNMQnTS7QE6hS0tsin0JosonNTsM0BOxv2sX7E6BwkOOu2N7vi2qTZTUZXOjH7BBupVPq2llx4ff9Nv5CQTDKIdLpda9tYy_qAPW4Ht13DIX_YfC7zHgCOLy5nVMUiuvM71f1HV8KbeXP8LnYl3y-28oGXgd1QI8P-IPZq-6zJHFzP8Jn0DNez_zbGCgTNbiqvS0soUnJ4ktj5jNeiHaAXT6wRSZciVycer_mDy54RwFpbZjpRx9rd4SgDFsqjjxtH6jSAtlv9Xfw</textarea></div><iframe style="display: none;"></iframe></div></div></div> <div class="col-12"><div><p class="text-center text-danger">
+                                            Demuestre que no es un robot
+                                        </p></div></div></div> <div class="row m-1"><div class="col-12 text-center"><a id="btnConsultar" class="btn pt-2 pb-2 pl-5 pr-5 font-weight-bold text-white" style="background-color: rgb(50, 182, 233);">Consultar</a></div></div></div></div></div></section> <!----> <!----> <div id="pruebaImagenesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade" style="display: none;"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-header d-flex bd-highlight"><h5 class="modal-title flex-grow-1 bd-highlight text-center">
+                                Imágenes de Infracción
+                            </h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close bd-highlight"><span aria-hidden="true">×</span></button></div> <div class="modal-body d-flex bd-highlight"></div> <div class="modal-footer d-flex bd-highlight"><div class="flex-grow-1 bd-highlight text-center"><div style="display: none;"><button type="button" class="btn btn-light border-secondary" style="display: none;">
+                                        Ver video <i class="fas fa-caret-right"></i></button></div></div> <button type="button" data-dismiss="modal" class="btn btn-light border-secondary">Cerrar</button></div></div></div></div> <!----> <div id="reciboModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade" style="display: none;"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-body" style="height: 700px;"><iframe src="" id="print-page" width="100%" marginwidth="10" style="border: none; height: 700px;"></iframe></div> <div class="modal-footer d-flex justify-content-end align-items-center"><button type="button" data-dismiss="modal" class="btn btn-secondary text-white">
+                                Cerrar
+                            </button></div></div></div></div> <div id="NotificacionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade"><div class="modal-dialog modal-xl"><div class="modal-content"><div class="modal-body" style="height: 700px;"><iframe src="" id="printPage" width="100%" marginwidth="10" style="border: none; height: 700px;"></iframe></div> <div class="modal-footer d-flex justify-content-between align-items-center"><button type="button" data-dismiss="modal" class="btn btn-secondary text-white">
+                                Cerrar
+                            </button> <button type="button" class="btn text-white" style="background-color: rgb(50, 182, 233);">
+                                Imprimir
+                            </button></div></div></div></div> <!----> <!----> <!----> <!----> <!----> <div id="mercadoPagoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header d-flex bd-highlight" style="background-color: rgb(50, 182, 233);"><div class="payment-institution"><img src="/images/logo_mercadopago.png" alt="mercadopago" class="logo-payment-institution"></div> <button type="button" data-dismiss="modal" aria-label="Close" class="close bd-highlight"><span aria-hidden="true">×</span></button></div> <div class="modal-body"><div class="form-group"><label for="emailInfractor">
+                                    Email
+                                </label> <input id="emailInfractor" type="email" class="form-control" style=""></div> <div class="form-group"><label for="confirmacionEmailInfractor">
+                                    Repetir Email
+                                </label> <input id="confirmacionEmailInfractor" type="email" class="form-control" style=""> </div></div> <div class="modal-footer d-flex justify-content-between bd-highlight"><button type="button" data-dismiss="modal" class="btn border-secondary text-white" style="background-color: rgb(64, 64, 65);">
+                                Cancelar
+                            </button> <button type="button" id="pagarMercadoPago" class="btn border-secondary text-white" style="background-color: rgb(50, 182, 233);"><span>Pagar</span></button></div></div></div></div> <div id="pagoOnlineNetPagosModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header d-flex bd-highlight" style="background-color: rgb(61, 101, 138);"><div class="payment-institution"><img src="/images/logo_net_pagos.png" alt="netpagos" class="logo-payment-institution"></div> <button type="button" data-dismiss="modal" aria-label="Close" class="close bd-highlight"><span aria-hidden="true">×</span></button></div> <div class="modal-body"><div id="container-boton-net-pagos" style="background-color: rgb(61, 101, 138);"><button id="boton-net-pagos" class="btn btn-block mb-1 text-white btn_tarj_credito pnetLoading">Pagar</button></div></div> <div class="modal-footer d-flex bd-highlight"><button type="button" data-dismiss="modal" class="btn btn-light border-secondary">
+                                Cerrar
+                            </button></div></div></div></div> <div id="pagoUnicoNetPagos" role="dialog" class="modal fade"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header d-flex bd-highlight" style="background-color: rgb(248, 215, 218);"><h5 class="modal-title flex-grow-1 bd-highlight text-center text-white">
+                                NET Pagos
+                            </h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close bd-highlight"><span aria-hidden="true">×</span></button></div> <div class="modal-body"><h5 class="modal-title flex-grow-1 bd-highlight text-center">
+                                El medio de pago solo permite el pago de un acta por vez.
+                            </h5></div> <div class="modal-footer d-flex bd-highlight"><button type="button" data-dismiss="modal" class="btn btn-light border-secondary">
+                                Cerrar
+                            </button></div></div></div></div> <div id="errorComprobanteNetPagos" role="dialog" class="modal fade"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header d-flex bd-highlight" style="background-color: rgb(248, 215, 218);"><h5 class="modal-title flex-grow-1 bd-highlight text-center text-white">
+                                NET Pagos
+                            </h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close bd-highlight"><span aria-hidden="true">×</span></button></div> <div class="modal-body"><h5 class="modal-title flex-grow-1 bd-highlight text-center">
+                                Error al generar comprobante de pago.
+                            </h5></div> <div class="modal-footer d-flex bd-highlight"><button type="button" data-dismiss="modal" class="btn btn-light border-secondary">
+                                Cerrar
+                            </button></div></div></div></div> <div id="terminosDescargoWebModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header d-flex bd-highlight"><h5 class="modal-title flex-grow-1 bd-highlight text-center">
+                                Términos y condiciones
+                            </h5> <button type="button" data-dismiss="modal" aria-label="Close" class="close bd-highlight"><span aria-hidden="true">×</span></button></div> <div class="modal-body bd-highlight"><h5>
+                                Informacion
+                            </h5> <p>
+                                El usuario acepta que éste sistema de descargo on-line, es voluntario, alternativo y sustituye a la audiencia presencial, ante el Sr. Juez de Faltas, establecida en los arts. 46 y 47 del Decreto-Ley Provincial N° 8751/77.
+                            </p> <p>
+                                Asimismo, el usuario acepta que toda notificación electrónica dirigida por el Tribunal
+                                Municipal de Faltas de Lanús, desde la dirección de e-mail .., a la dirección de e-mail declarada por el
+                                usuario en este acto, implica la notificación fehaciente en los términos del art. 35 inc. c) de la Ley N°
+                                15.927.
+                            </p> <p>
+                                En el domicilio electrónico constituido por el usuario, se practicarán todas las notificaciones de la
+                                causa que se originen a consecuencia de la/s infracción/es de tránsito constatada/s, a la fecha,
+                                incluido; el comprobante de pago, la sentencia y el tratamiento de los recursos establecidos en el art. 40
+                                dela Ley N° 13.927, según un corresponda.
+                            </p> <p>
+                                El usuario acepte, que la presentación de un descargo, sin que exista reconocimiento voluntario de la/s
+                                infracción/es, podrá generar la pérdida del beneficio del pago voluntario contemplado en el art. 85 inc.
+                                al dela Ley N° 24.449.
+                            </p> <p>
+                                Para la presentación del descargo on-line, el usuario puede, si lo desea, contar con la asistencia de un
+                                letrado, cuyas costas y honorarios serán a su exclusivo coste y cargo, o en su defecto, manifestar en
+                                forma expresa que desiste del mismo y elerce su representación por derecho propio.
+                            </p> <p>
+                                Finalmente, se encuentra a disposición del usuario el siguiente nro. telefónico ., a fin de efectuar
+                                consultas sobre el funcionamiento de éste sistema de
+                                descargo on-line.
+                            </p> <p>
+                                Si Ud.va a realizar un descargo por mas de un dominio, indique los mismos.
+                            </p></div> <div class="modal-footer d-flex bd-highlight"><button type="button" data-dismiss="modal" class="btn btn-default">
+                                Cerrar
+                            </button> <button type="button" class="btn font-weight-bold text-white px-3" style="background-color: rgb(50, 182, 233);">
+                                Continuar
+                            </button></div></div></div></div></div> <div style="position: fixed; top: 12px; right: 12px;"><div role="alert" aria-live="assertive" aria-atomic="true" class="toast rounded-lg"><div class="shadow toast-header text-white border-0 p-3 bg-success" style="opacity: 0.95;"><i class="fas fa-check mr-2" style="font-size: 1.5rem;"></i> <strong class="mr-2" style="font-size: 1rem; line-height: 1.5; text-align: left; font-weight: 300;">No posee infracciones</strong> <button type="button" data-dismiss="toast" aria-label="Close" class="ml-2 mb-1 close text-white"><span aria-hidden="true">×</span></button></div></div></div> <!----></div>
+
+    <script>
+        var script = document.createElement("script");
+        script.addEventListener("load", function() {
+            window.addEventListener("errorEpagos", function(event) {
+                // acá escriba su código de manejo de errores
+                document.getElementById('div_error').innerHTML = event.detail.mensaje;
+                document.getElementById('div_error_cnt').style.display = 'inline';
+            });
+            /*Testing*/
+            //ePagos.setClavePublica("2b3f6eded4bcb757276dd0779b046be0"); //completar con la credencial pública asignada Testing
+            //ePagos.setOrganismo('80');                                  //completar con el número de organismo asignado
+            //ePagos.setAmbiente("T");                                    //definir el entorno (T=Testing, P=Producción)
+
+            /*Produccion*/
+            ePagos.setClavePublica("20dc894717ca556d76ac2167beaa4bc0"); //completar con la credencial pública asignada Produccion
+            ePagos.setOrganismo('80'); //completar con el número de organismo asignado
+            ePagos.setAmbiente("P"); //definir el entorno (T=Testing, P=Producción)
+        });
+        /*Testing*/
+        //script.src = "https://sandbox.epagos.com.ar/quickstart/epagos.min.js"; //esta es la url de la librería para sandbox
+
+        /*Produccion*/
+        script.src = "https://api.epagos.com.ar/quickstart/epagos.min.js"; //esta es la url de la librería para producción
+
+        script.async = true;
+        document.getElementsByTagName("script")[0].parentNode.appendChild(script);
+    </script>
+
+    <script>
+        window.onload = function() {
+            /*Staging*/
+            //const api_key = "T6Ma05tNC1X0QkZs93xaVTaO3xoOvbG43jsBi1bMaPqoU3xfaz";
+            /*Production*/
+            const api_key = "IOyOiBDzvdojwcef2RKgg4tPcfShHer4ARD7gvItyWB2cCuA30";
+            const script = document.createElement("script");
+            // Instancia del Botón
+            script.addEventListener("load", function() {
+                Pnet.addButton({
+                    attach: "container-boton-net-pagos",
+                    className: "btn btn-block mb-1 text-white btn_tarj_credito",
+                    id: "boton-net-pagos",
+                    label: "Pagar",
+                    loading: true
+                });
+            });
+            script.setAttribute('id', 'NETPagos');
+            /*Staging*/
+            //script.src = `https://stg-netpagos-sdk.provincianet.com.ar/sdk.js?version=${Date.now()}&api_key=${api_key}`;
+            /*Production*/
+            script.src = `https://netpagos-sdk.provincianet.com.ar/sdk.js?version=${Date.now()}&api_key=${api_key}`;
+            script.async = true;
+            document.getElementsByTagName("script")[0].parentNode.appendChild(script);
+        };
+    </script>
+
+    <script>
+        lightbox.option({
+            wrapAround: true,
+            albumLabel: 'Infracción %1 de %2'
+        });
+    </script>
+
+    <script>
+        let app = new Vue({
+            el: '#app',
+            components: {
+                'vue-recaptcha': VueRecaptcha
+            },
+            data: {
+                loading: false,
+                mensajeSinInfracciones: '',
+                loaded: false,
+                municipio: '',
+                ok: false,
+                error: false,
+                mensaje: '',
+                ePagos: false,
+                mercadoPago: false,
+                netPagos:false,
+                logo: '',
+                primaryColor: '',
+                secondaryColor: '',
+                netPagosColor: '',
+                mercadoPagoColor: '',
+                errorSintaxis: false,
+                errorReCatchap: false,
+                errorCampoVacio: false,
+                errorSistema: false,
+                numeroPatente: '',
+                tipoDocumento: '',
+                numeroDocumento: '',
+                infracciones: [],
+                baseUrl: '',
+                recaptcha: '',
+                tipoConsulta: '',
+                consulta: '',
+                totalInfracciones: 0,
+                descuento: 0,
+                fecha: '',
+                totalSeleccionado: [],
+                infraccionAMostrarPruebas: {},
+                infraccionARealizarDescargo: {},
+                nombreYApellidoDescargo: '',
+                emailDescargo: '',
+                repeatEmailDescargo: '',
+                codAreaTelefonoDescargo: '',
+                telefonoDescargo: '',
+                descripcionDescargo: '',
+                dniFrenteDescargo: '',
+                dniDorsoDescargo: '',
+                cedulaFrenteDescargo: '',
+                cedulaDorsoDescargo: '',
+                licenciaFrenteDescargo: '',
+                licenciaDorsoDescargo: '',
+                dniFrenteLabel: 'DNI Frente',
+                dniDorsoLabel: 'DNI Dorso',
+                cedulaFrenteLabel: 'Cédula Frente',
+                cedulaDorsoLabel: 'Cédula Dorso',
+                licenciaFrenteLabel: 'Licencia de conducir Frente',
+                licenciaDorsoLabel: 'Licencia de conducir Dorso',
+                documento3Descargo: '',
+                documento4Descargo: '',
+                documento3Label: 'Otros documentos',
+                documento4Label: 'Otros documentos',
+                terminos1: false,
+                terminos2: false,
+                terminos3: false,
+                terminos4: false,
+                terminos5: false,
+                todasSeleccionadas: false,
+                totalConDescuento: 0,
+                reciboUrl: '',
+                montoAPagarEPagos: '',
+                actaAPagarEPagos: '',
+                comprobanteAPagarEPagos: '',
+                nro_comprobante_formateado: '',
+                emailInfractor: '',
+                confirmacionEmailInfractor: '',
+                montoTotalResultTodasInfracciones: 0,
+                ahorroPV: 0,
+                validationErrors: [],
+                sId: null,
+                basePath: '',
+                pathPdf: '',
+                loading: false,
+                loadingNetPagos: false,
+                infraccion: {
+                    pathS3Notificacion: ''
+                },
+                pagination: {
+                    has_more: false,
+                    total_pages: 0,
+                    total_items: 0,
+                },
+                 currentPage: 1, 
+                itemsPerPage: 25,
+                hasMore: false,
+            },
+            async beforeMount() {
+                this.emailInfractor = '';
+                this.confirmacionEmailInfractor = '';
+                this.error = false;
+                this.ok = false;
+                this.mensaje = '';
+                this.errorSintaxis = false;
+                this.errorReCatchap = false;
+                this.errorCampoVacio = false;
+                this.errorSistema = false;
+                this.montoAPagarEPagos = '';
+                this.actaAPagarEPagos = '';
+                this.comprobanteAPagarEPagos = '';
+                this.nro_comprobante_formateado = '';
+                const queryString = await window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const municipio = await urlParams.get('municipio');
+                this.municipio = municipio;
+                const ok = await urlParams.get('ok');
+                this.ok = ok;
+                const error = await urlParams.get('error');
+                this.error = error;
+                const mensaje = await urlParams.get('mensaje');
+                this.mensaje = mensaje;
+                result = await fetch('./config/config.json');
+                result = await result.json();
+                this.primaryColor = result[`${municipio}`].colorPrimario;
+                this.secondaryColor = result[`${municipio}`].colorSecundario;
+                this.netPagosColor = result[`${municipio}`].colorNetPagos;
+                this.mercadoPagoColor = result[`${municipio}`].colorMercadoPago;
+                this.logo = result[`${municipio}`].logo;
+                this.baseUrl = result[`${municipio}`].apiDeConsultas;
+                this.baseInfra = result[`${municipio}`].infratrack;
+                this.ePagos = result[`${municipio}`].ePagos;
+                this.mercadoPago = result[`${municipio}`].mercadoPago;
+                this.netPagos = result[`${municipio}`].netPagos;
+                this.loaded = true;
+            },
+            methods: {
+                submit: function() {
+                    this.$refs.recaptcha.execute();
+                },
+                onCaptchaVerified: function(recaptchaToken) {
+                    this.recaptcha = recaptchaToken;
+                },
+                onCaptchaExpired: function() {
+                    this.recaptcha = '';
+                    this.$refs.recaptcha.reset();
+                },
+                goToPage(page) {
+                    if (page >= 1 && page <= this.totalPages) {
+                        this.currentPage = page;
+                        let data = {
+                            tipo: this.tipoConsulta,
+                            consulta: this.consulta,
+                            page: this.currentPage,
+                        };
+                        this.getInfracciones(data);
+                    }
+                },
+                nextPage() {
+                    if (this.pagination.has_more) {
+                        this.goToPage(this.currentPage + 1);
+                    }
+                },
+                previousPage() {
+                    if (this.currentPage > 1) {
+                        this.goToPage(this.currentPage - 1);
+                    }
+                },
+                firstPage() {
+                    this.goToPage(1);
+                },
+                lastPage() {
+                    this.goToPage(this.totalPages);
+                },
+                consultar: function() {
+                    this.errorSistema = false;
+                    this.deshabilitarBotones();
+                    this.actas = [];
+                    let dominio = this.numeroPatente.trim().replace(/\s/g, '');
+                    let documento = this.numeroDocumento.trim().replace(/\s/g, '');
+                    let tipoDoc = this.tipoDocumento;
+                    if (this.recaptcha.length < 1) {
+                        this.errorReCatchap = true;
+                        this.habilitarBotones();
+                    } else if ($('#pillsDominioTab').hasClass('active')) {
+                        this.errorReCatchap = false;
+                        let dominioLength = dominio.length != 6 && dominio.length != 7;
+                        let regxMoto = /^[A-Za-z]{0,1}[0-9]{3}[A-Za-z]{3}$/;
+                        let formatMoto = !regxMoto.test(dominio);
+                        let regxAuto1 = /^[A-Za-z]{3}[0-9]{3}$/;
+                        let formatAuto1 = !regxAuto1.test(dominio);
+                        let regxAuto2 = /^[A-Za-z]{2}[0-9]{3}[A-Za-z]{2}$/;
+                        let formatAuto2 = !regxAuto2.test(dominio);
+                        let error = /*hasSpace ||*/ dominioLength || !(formatMoto || formatAuto1 || formatAuto2);
+                        if (error) {
+                            this.errorSintaxis = true;
+                            this.habilitarBotones();
+                        } else {
+                            this.fecha = moment().format('DD-MM-YYYY');
+                            this.errorSintaxis = false;
+                            this.recaptcha = '';
+                            grecaptcha.reset();
+                            let data = {
+                                'tipo': 'DOMINIO',
+                                'consulta': dominio,
+                                'g-recaptcha-response': this.recaptcha,
+                                'sId': null,
+                            };
+                            // URL CONSULTAS-API
+                            axios.get(`${this.baseUrl}infracciones/a-pagar`, {
+                                    params: data
+                                })
+                                .then(response => {
+                                    this.habilitarBotones();
+                                    this.infracciones = response.data.infracciones;
+                                    this.tipoConsulta = response.data.tipo_consulta;
+                                    this.consulta = response.data.consulta;
+                                    this.totalInfracciones = Object.keys(response.data.infracciones).length;
+                                    this.descuento = response.data.total_monto;
+                                    this.montoTotalResultTodasInfracciones = response.data.monto_total_infracciones;
+                                    this.ahorroPV = response.data.descuento_total_pv;
+                                    if (this.infracciones.length == 0) {
+                                        this.mensajeSinInfracciones = `El dominio ${this.consulta} no posee infracciones procesadas a la fecha de hoy ${moment().format('DD/MM/YYYY')}`;
+                                    } else if (this.ePagos) {
+                                        this.consultarEPagos();
+                                    }
+                                }).catch(error => {
+                                    this.habilitarBotones();
+                                    this.errorSistema = true;
+                                });
+                            this.getInfracciones(data);
+                        }
+                    } else if ($('#pillsDocumentoTab').hasClass('active')) {
+                        let documentoLength = false;
+                        if (tipoDoc == 'LE' || tipoDoc == 'LC') {
+                            documentoLength = true;
+                        } else if (tipoDoc == 'CUIT' && (documento.length == 11 || documento.length == 13)) {
+                            documentoLength = true;
+                        } else if (tipoDoc == 'DNI' && (documento.length >= 7 && documento.length <= 10)) {
+                            documentoLength = true;
+                        }
+                        let error = /*hasSpace ||*/ !documentoLength;
+                        if (error) {
+                            this.errorSintaxis = true;
+                            this.habilitarBotones();
+                        } else {
+                            this.fecha = moment().format('DD-MM-YYYY');
+                            this.errorSintaxis = false;
+                            this.recaptcha = '';
+                            grecaptcha.reset();
+                            let data = {
+                                'tipo': tipoDoc,
+                                'consulta': documento,
+                                'g-recaptcha-response': this.recaptcha,
+                                'sId': null,
+                            };
+                            this.getInfracciones(data);
+                        }
+                    }
+                },
+                getInfracciones: function(data) {
+                    axios.get(`${this.baseUrl}infracciones/a-pagar`, {
+                            params: data
+                        })
+                        .then(response => {
+                            this.habilitarBotones();
+                            this.infracciones = Array.isArray(response.data.infracciones) 
+                                ? response.data.infracciones 
+                                : Object.values(response.data.infracciones || {});
+                            this.tipoConsulta = response.data.tipo_consulta;
+                            this.consulta = response.data.consulta;
+                            this.totalInfracciones = response.data.pagination.total; 
+                            this.descuento = response.data.total_monto;
+                            this.sId = response.data.sId;
+                            this.currentPage = response.data.pagination.page;  
+                            this.hasMore = response.data.has_more;
+                            this.montoTotalResultTodasInfracciones = response.data.monto_total_infracciones;
+                            this.ahorroPV = response.data.descuento_total_pv;
+                            if (this.infracciones.length == 0) {
+                                if (this.isCorrientes) {
+                                    this.mensajeSinInfracciones = `Escribinos (solo mensajes) por WhatsApp para consultas y solicitudes de libre deuda al número <a href="https://wa.me/5493794341768" target="_blank">3794341768</a> (Opción 6). Nuestro horario de atención es de Lunes a Viernes, de 7hs a 18hs.<br>` +
+                                                                `El dominio ${this.consulta} no posee infracciones procesadas en infratrack a la fecha ${moment().format('DD/MM/YYYY')}.`;
+                                } else {
+                                    this.mensajeSinInfracciones = `El dominio ${this.consulta} no posee infracciones procesadas en infratrack a la fecha ${moment().format('DD/MM/YYYY')}.`;
+                                }
+                            }
+
+                            this.infracciones = JSON.parse(JSON.stringify(this.infracciones));
+                            let infraccionesTmp = [];
+                            Object.entries(this.infracciones).forEach(([, infraccion], index) => {
+                                if (infraccion.bloqueada_por_juez_id) {
+                                    infraccion.epagos = {
+                                        'acepta_pv': false,
+                                        'acepta_pt': false
+                                    };
+                                    infraccion.estado = 'RESOLVER_EN_JUZGADO';
+                                }
+                                infraccionesTmp.push(infraccion);
+                            });
+                            this.infracciones = infraccionesTmp;
+
+                        }).catch(error => {
+                            this.habilitarBotones();
+                            this.errorSistema = true;
+                        });
+                },
+                deshabilitarBotones: function() {
+                    this.ok = false;
+                    this.error = false;
+                    this.mensaje = '';
+                    this.errorSintaxis = false,
+                        this.errorReCatchap = false,
+                        this.errorCampoVacio = false,
+                        this.errorSistema = false,
+                        $('#btnConsultar').text('');
+                    $('#btnConsultar').prop('disabled', true);
+                    $('#btnConsultar').css('background-color', this.secondaryColor);
+                    $('#btnConsultar').append('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>  Consultando...');
+                },
+                habilitarBotones: function() {
+                    $('#btnConsultar span').remove();
+                    $('#btnConsultar').text('Consultar');
+                    $('#btnConsultar').css('background-color', this.primaryColor);
+                    $('#btnConsultar').prop('disabled', false);
+                },
+                mostrarPruebaImagenes: function(infraccion) {
+                    this.infraccionAMostrarPruebas = infraccion;
+                    $('#pruebaImagenesModal').modal('show');
+                    if (this.infraccionAMostrarPruebas.video) {
+                        $('#acta-video')[0].load();
+                    }
+                },
+                mostrarPruebaVideo: function() {
+                    $('#pruebaVideoModal').modal('show');
+                },
+                mostrarRecibo: async function(infraccion) {
+                    if (!infraccion.numero_comprobante || infraccion.estado === 'VENCIDO') {
+                        await this.generateComprobanteRafam(infraccion)
+                    }
+                    this.reciboUrl = infraccion.imprimir_link;
+                    $("#reciboModal").modal("show");
+                },
+                mostrarNotificacion: async function(path) {
+                    this.pathPdf = path;
+                    $("#NotificacionModal").modal("show");
+                },
+                verBarraRealizarDescargoWeb: function(infraccion) {
+                    this.infraccionARealizarDescargo = infraccion;
+                    // /descargo_web.php?municipio=lanus-local&acta=CM-609707
+                    $("#terminosDescargoWebModal").modal();
+                },
+                irDescargoWeb: function() {
+                    if (!this.infraccionARealizarDescargo.descargo)
+                        window.location.href = `descargo_web.php?municipio=${this.municipio}&acta=${this.infraccionARealizarDescargo.acta}`;
+                },
+                realizarDescargo: function(infraccion) {
+                    this.nombreYApellidoDescargo = '';
+                    this.emailDescargo = '';
+                    this.repeatEmailDescargo = '';
+                    this.codAreaTelefonoDescargo = '';
+                    this.telefonoDescargo = '';
+                    this.descripcionDescargo = '';
+                    this.dniFrenteDescargo = '';
+                    this.dniDorsoDescargo = '';
+                    this.cedulaFrenteDescargo = '';
+                    this.cedulaDorsoDescargo = '';
+                    this.licenciaFrenteDescargo = '';
+                    this.licenciaDorsoDescargo = '';
+                    this.dniFrenteLabel = 'DNI Frente';
+                    this.dniDorsoLabel = 'DNI Dorso';
+                    this.cedulaFrenteLabel = 'Cédula Frente';
+                    this.cedulaDorsoLabel = 'Cédula Dorso';
+                    this.licenciaFrenteLabel = 'Licencia de conducir Frente';
+                    this.licenciaDorsoLabel = 'Licencia de conducir Dorso';
+                    this.documento3Descargo = '';
+                    this.documento4Descargo = '';
+                    this.documento3Label = 'Otros documentos';
+                    this.documento4Label = 'Otros documentos';
+                    this.terminos1 = false;
+                    this.terminos2 = false;
+                    this.terminos3 = false;
+                    this.infraccionARealizarDescargo = infraccion;
+                    $('small[id$=errors]').each(function(index, element) {
+                        $(this).text('');
+                    });
+
+                    //var win = window.open('descargo_web.php?municipio=' + this.municipio + '&acta=' + infraccion.acta, '_blank');
+
+                    $("#realizarDescargoModal").modal("show");
+                },
+                imprimirRecibo: function() {
+                    var pf = $('#print-page')[0];
+                    pf.contentWindow.postMessage('print', '*');
+                    return false;
+                },
+                enviarDescargo: function(infraccion) {
+                    if (!this.verificarRequeridosTodosLosCampos()) return;
+
+                    let formData = new FormData();
+                    formData.append('infraccion', this.infraccionARealizarDescargo.acta);
+                    formData.append('nombreYApellido', this.nombreYApellidoDescargo);
+                    formData.append('email', this.emailDescargo);
+                    formData.append('telefono', String(this.codAreaTelefonoDescargo) + String(this.telefonoDescargo));
+                    formData.append('descripcion', this.descripcionDescargo);
+                    formData.append('dniFrente', this.dniFrenteDescargo);
+                    formData.append('dniDorso', this.dniDorsoDescargo);
+                    formData.append('cedulaFrente', this.cedulaFrenteDescargo);
+                    formData.append('cedulaDorso', this.cedulaDorsoDescargo);
+                    formData.append('licenciaFrente', this.licenciaFrenteDescargo);
+                    formData.append('licenciaDorso', this.licenciaDorsoDescargo);
+                    formData.append('documento3', this.documento3Descargo);
+                    formData.append('documento4', this.documento4Descargo);
+
+                    // URL CONSULTAS-API
+                    axios.post(`${this.baseUrl}infracciones/descargo-web`,
+                        formData, {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        }
+                    ).then(response => {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Su descargo fue enviado.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        $("#realizarDescargoModal").modal("toggle");
+                    }).catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Su descargo NO pudo ser enviado.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        $('small[id$=errors]').each(function(index, element) {
+                            $(this).text('');
+                        });
+                        $.each(error.response.data, function(key, value) {
+                            $(`#${key}-errors`).text(value[0]);
+                        });
+                    });
+                },
+                verificarRequeridosTodosLosCampos: function() {
+                    let noEnviar = true;
+                    // Verificar inputs
+                    if (!this.nombreYApellidoDescargo) {
+                        $("#nombreYApellido-errors").text("Este campo es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.emailDescargo) {
+                        $("#emailDescargo-errors").text("Este campo es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.repeatEmailDescargo) {
+                        $("#repeatEmailDescargo-errors").text("Este campo es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (this.emailDescargo && this.repeatEmailDescargo && (this.emailDescargo != this.repeatEmailDescargo)) {
+                        $("#repeatEmailDescargo-errors").text("La confirmacion de correo no coincide");
+                        noEnviar = false;
+                        $("#emailDescargo-errors").text("La confirmacion de correo no coincide");
+                        noEnviar = false;
+                    }
+
+                    if (!this.codAreaTelefonoDescargo) {
+                        $("#codAreaTelefonoDescargo-errors").text("Este campo es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.telefonoDescargo) {
+                        $("#telefonoDescargo-errors").text("Este campo es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.descripcionDescargo) {
+                        $("#descripcionDescargo-errors").text("Este campo es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.terminos1 || !this.terminos2 || !this.terminos3 || !this.terminos4 || !this.terminos5) {
+                        $("#terminos-errors").text("Debe aceptar los terminos");
+                        noEnviar = false;
+                    }
+
+                    // Verificar archivos adjuntos
+                    if (!this.dniFrenteDescargo) {
+                        $("#dniFrenteDescargo-errors").text("Este documento es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.dniDorsoDescargo) {
+                        $("#dniDorsoDescargo-errors").text("Este documento es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.cedulaFrenteDescargo) {
+                        $("#cedulaFrenteDescargo-errors").text("Este documento es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.cedulaDorsoDescargo) {
+                        $("#cedulaDorsoDescargo-errors").text("Este documento es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.licenciaFrenteDescargo) {
+                        $("#licenciaFrenteDescargo-errors").text("Este documento es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    if (!this.licenciaDorsoDescargo) {
+                        $("#licenciaDorsoDescargo-errors").text("Este documento es obligatorio");
+                        noEnviar = false;
+                    }
+
+                    return noEnviar;
+                },
+                limpiarInput: function(id_input) {
+                    $("#" + id_input).text('');
+                },
+                esNumero: function(evt) {
+                    evt = (evt) ? evt : window.event;
+                    var charCode = (evt.which) ? evt.which : evt.keyCode;
+                    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                        evt.preventDefault();
+                    } else {
+                        return true;
+                    }
+                },
+                validarEmail: function() {
+                    if (this.emailDescargo != this.repeatEmailDescargo) {
+                        $('#repeat-email-errors').text('El email debe ser igual al declarado en el campo anterior.');
+                    } else {
+                        $('#repeat-email-errors').text('');
+                    }
+                },
+                evaluarTerminos: function() {
+                    $('#terminos-errors').text('');
+                },
+                procesarDniFrenteDescargo: function(event) {
+                    this.dniFrenteLabel = event.target.files[0].name;
+                    this.dniFrenteDescargo = event.target.files[0];
+                },
+                procesarDniDorsoDescargo: function(event) {
+                    this.dniDorsoLabel = event.target.files[0].name;
+                    this.dniDorsoDescargo = event.target.files[0];
+                },
+                procesarCedulaFrenteDescargo: function(event) {
+                    this.cedulaFrenteLabel = event.target.files[0].name;
+                    this.cedulaFrenteDescargo = event.target.files[0];
+                },
+                procesarCedulaDorsoDescargo: function(event) {
+                    this.cedulaDorsoLabel = event.target.files[0].name;
+                    this.cedulaDorsoDescargo = event.target.files[0];
+                },
+                procesarlicenciaFrenteDescargo: function(event) {
+                    this.licenciaFrenteLabel = event.target.files[0].name;
+                    this.licenciaFrenteDescargo = event.target.files[0];
+                },
+                procesarlicenciaDorsoDescargo: function(event) {
+                    this.licenciaDorsoLabel = event.target.files[0].name;
+                    this.licenciaDorsoDescargo = event.target.files[0];
+                },
+                procesarDocumento3Descargo: function(event) {
+                    this.documento3Label = event.target.files[0].name;
+                    this.documento3Descargo = event.target.files[0];
+                },
+                procesarDocumento4Descargo: function(event) {
+                    this.documento4Label = event.target.files[0].name;
+                    this.documento4Descargo = event.target.files[0];
+                },
+                mostrarPagoOnlineMercadoPago: function() {
+                    this.validationErrors = [];
+                    $('#mercadoPagoModal').modal('show');
+                },
+                mostrarPagoOnlineEpagosMultiple: function() {
+                    this.validationErrors = [];
+                    $('#ePagosEmailUser').modal('show');
+                }, 
+                pagarPorEPagos: function() {
+                    this.validationErrors = [];
+
+                    if (!this.emailInfractor) {
+                        this.validationErrors.push('Email requerido.');
+                    } else if (!this.validEmail(this.emailInfractor)) {
+                        this.validationErrors.push('Email válido requerido.');
+                    }
+
+                    if (!this.confirmacionEmailInfractor) {
+                        this.validationErrors.push('Email de confirmación requerido.');
+                    } else if (!this.validEmail(this.confirmacionEmailInfractor)) {
+                        this.validationErrors.push('Email de confirmación válido requerido.');
+                    }
+
+                    if (this.emailInfractor != this.confirmacionEmailInfractor) {
+                        this.validationErrors.push('Los correos electrónicos no coinciden.');
+                    }
+
+                    if (this.validationErrors.length > 0) {
+                        return false;
+                    }
+                    
+                    var actas = [];
+                    var montoTotal = 0;
+                    var OpcOperacionesLote = '';
+                    this.loading = true;
+                    for (let i = 0; i < this.totalSeleccionado.length; i++) {
+                        actas = [...actas, this.totalSeleccionado[i].acta];
+                    }
+                    let email = this.emailInfractor;
+                    axios.post(`${this.baseUrl}epagos/iniciar-pago-lote`, {
+                        actas,
+                        email
+                    })
+                    .then(response => {
+                        $('#pagoOnlineModal').modal('show');
+                        $('#boton-credito').empty();
+                        $('#boton-debito').empty();
+                        this.loading = false;
+                        montoTotal = response.data.monto_total;
+                        OpcOperacionesLote = response.data.transacciones_ids;
+                        numeroOperacion = response.data.lote_id;
+                        
+                        ePagos.botonPago({
+                            "datosOperacion": {
+                                "convenio": "14080", //número de convenio asingado
+                                "ok_url": `${this.baseUrl}epagos/ok`, //url a donde redirigir en caso de éxito
+                                "error_url": `${this.baseUrl}epagos/error`, //url a donde redirigir en caso de error
+                                "monto_operacion": montoTotal, 
+                                "opc_operaciones_lote":OpcOperacionesLote,
+                                "numero_operacion":numeroOperacion
+                            },
+                            "atributos": {
+                                "label": "Tarjeta de Crédito", // opcional
+                                "elemento_destino": "boton-credito", // opcional
+                                "className": "btn btn-block mb-1 text-white btn_tarj_credito", // opcional
+                                "style": "margin-top: 5px;",
+                                "estiloTooltip": {
+                                    "font_size": "0px",
+                                    "background_color": "transparent"
+                                }
+                            },
+
+                        });
+
+                        ePagos.botonPago({
+                            "datosOperacion": {
+                                "convenio": "13080", //número de convenio asingado
+                                "ok_url": `${this.baseUrl}epagos/ok`, //url a donde redirigir en caso de éxito
+                                "error_url": `${this.baseUrl}epagos/error`, //url a donde redirigir en caso de error
+                                "monto_operacion": montoTotal, 
+                                "opc_operaciones_lote":OpcOperacionesLote,
+                                "numero_operacion":numeroOperacion
+                            },
+                            "atributos": {
+                                "label": "Tarjeta de Débito", // opcional
+                                "elemento_destino": "boton-debito", // opcional
+                                "className": "btn btn-block mb-1 text-white btn_tarj_debito", // opcional
+                                "style": "margin-top: 5px;",
+                                "estiloTooltip": {
+                                    "font_size": "0px",
+                                    "background_color": "transparent"
+                                }
+                            }
+
+                        });
+
+                        $("#boton-credito,#boton-debito").mousedown(function(e) {
+                            ('#pagoOnlineModal').modal('hide');
+                            return true;
+                        });
+
+                    }).catch(error => {
+                        this.loading = false;
+                        $('#pagoInicioErrorModal').modal('show');
+                        $(".btn_tarj_credito, .btn_tarj_debito").off('click');
+                        $(".btn_tarj_credito, .btn_tarj_debito").unbind("click");
+
+                        return 'error';
+                        this.errorSistema = true;
+                    });
+                    
+                },
+                pagarPorMercadoPago: function() {
+                    this.validationErrors = [];
+
+                    if (!this.emailInfractor) {
+                        this.validationErrors.push('Email requerido.');
+                    } else if (!this.validEmail(this.emailInfractor)) {
+                        this.validationErrors.push('Email válido requerido.');
+                    }
+
+                    if (!this.confirmacionEmailInfractor) {
+                        this.validationErrors.push('Email de confirmación requerido.');
+                    } else if (!this.validEmail(this.confirmacionEmailInfractor)) {
+                        this.validationErrors.push('Email de confirmación válido requerido.');
+                    }
+
+                    if (this.validationErrors.length > 0) {
+                        return false;
+                    }
+
+                    this.loading = true;
+                    if ((this.emailInfractor === this.confirmacionEmailInfractor) && (this.emailInfractor.length > 0)) {
+                        $('#pagarMercadoPago').attr('disabled', true);
+                        var actas = [];
+                        for (let i = 0; i < this.totalSeleccionado.length; i++) {
+                            actas = [...actas, this.totalSeleccionado[i].acta];
+                        }
+                        let email = this.emailInfractor;
+                        axios.post(`${this.baseUrl}pagar-por-mercado-pago`, {
+                                actas,
+                                email
+                            })
+                            .then(response => {
+                                let url = response.data;
+                                $('#pagarMercadoPago').attr('disabled', false);
+                                window.location.href = url;
+                            }).catch(error => {
+                                this.habilitarBotones();
+                                this.errorSistema = true;
+                                this.loading = false;
+                                $('#pagarMercadoPago').attr('disabled', false);
+                            });
+                    } else {
+                        this.validationErrors.push('Los correos electrónicos no coinciden.');
+                        this.loading = false;
+                    }
+                },
+                updateBackgroundColorPills: function() {
+                    var primaryColor = this.primaryColor;
+                    var secondaryColor = this.secondaryColor;
+                    setTimeout(() => {
+                        if ($('#pillsDocumentoTab').hasClass('active')) {
+                            $('#pillsDocumentoTab').css('background-color', primaryColor);
+                            $('#pillsDominioTab').css('background-color', secondaryColor);
+
+                        } else {
+                            $('#pillsDocumentoTab').css('background-color', secondaryColor);
+                            $('#pillsDominioTab').css('background-color', primaryColor);
+
+                        }
+                    }, 100);
+                },
+                prepararNuevaConsulta: function() {
+                    this.mensajeSinInfracciones = '';
+                    this.errorSintaxis = false;
+                    this.errorReCatchap = false;
+                    this.errorCampoVacio = false;
+                    this.errorSistema = false;
+                    this.numeroPatente = '';
+                    this.tipoDocumento = '';
+                    this.numeroDocumento = '';
+                    this.infracciones = [];
+                    this.recaptcha = '';
+                    this.tipoConsulta = '';
+                    this.consulta = '';
+                    this.totalInfracciones = 0;
+                    this.descuento = 0;
+                    this.fecha = '';
+                    this.totalSeleccionado = [];
+                    this.infraccionAMostrarPruebas = {};
+                    this.todasSeleccionadas = false;
+                    this.totalConDescuento = 0;
+                    this.emailInfractor = '';
+                    this.confirmacionEmailInfractor = '';
+                },
+                consultarEPagos: async function() {    
+                    const infraccionesClonadas = Object.values(JSON.parse(JSON.stringify(this.infracciones)));
+
+                    const promesas = infraccionesClonadas.map(async (infraccion) => {
+                        const url = `${this.baseUrl}epagos/${infraccion.acta}`;                       
+
+                        try {
+                            const response = await axios.get(url);
+                            infraccion.epagos = {
+                                'acepta_pv': response.data.acepta_pv,
+                                'acepta_pt': response.data.acepta_pt,
+                                'monto_PT': response.data.monto_PT,
+                                'monto_PV': response.data.monto_PV,
+                                'firmeza': response.data.firmeza,
+                                'vencimiento_PV': response.data.vencimiento_PV,
+                                'vencimiento_PT': response.data.vencimiento_PT
+                            };
+                        } catch (error) {
+                            console.warn(`Error en epagos para acta ${infraccion.acta}`, error);
+                        }
+
+                        return infraccion;
+                    });
+
+                    this.infracciones = await Promise.all(promesas);                    
+                },
+                getEPago: async function(infraccion) {
+                    await axios.get(`${this.baseUrl}epagos/${infraccion.acta}`)
+                        .then(epagos => {
+                            infraccion.epagos = {
+                                'acepta_pv': epagos.data.acepta_pv,
+                                'acepta_pt': epagos.data.acepta_pt,
+                                'monto_PT': epagos.data.monto_PT,
+                                'monto_PV': epagos.data.monto_PV,
+                                'firmeza': epagos.data.firmeza,
+                                'vencimiento_PV': epagos.data.vencimiento_PV,
+                                'vencimiento_PT': epagos.data.vencimiento_PT
+                            };
+                        }).catch(error => {});
+                    return infraccion;
+                },
+                generateComprobanteRafam: async function(infraccion) {
+                    await axios.post(`${this.baseUrl}rafam/${infraccion.id}/${this.sId}/generate`)
+                        .then(response => {
+                            infraccion.numero_comprobante = response.data.comprobante_rafam.numero;
+                            infraccion.imprimir_link = response.data.imprimir_link;
+                            infraccion.estado = response.data.estado;
+                            infraccion.fecha_vencimiento = moment(response.data.comprobante_rafam.fecha_vencimiento).format('DD/MM/YYYY');
+                        }).catch(error => {
+
+                        });
+                    return infraccion;
+                },
+                generateNotificacion: async function(numero) {
+                    try {
+                        this.loading = true;
+
+                        if (this.pathPdf != '') {
+                            await this.mostrarNotificacion(this.pathPdf);
+                        }
+                        const response = await axios.post(`${this.baseInfra}api/consultaWeb/notificar`, {
+                            numero: numero
+                        });
+                        if (response.data.success) {
+                            this.pathPdf = response.data.path_base;
+                            console.log("Notificación path:", response.data);
+                            $("#NotificacionModal").modal("show");
+                            this.loading = false;
+                            console.log("Notificación path:", response.data.message);
+                            console.log("Notificación creada correctamente:", response.data.message);
+                        } else {
+                            this.loading = false;
+                            console.error("Error al crear la notificación:", response.data.message);
+                        }
+                    } catch (error) {
+                        this.loading = false;
+                        console.error("Error en la solicitud:", error);
+                    }
+                },
+                imprimir: function() {
+                    const iframe = document.getElementById('printPage');
+                    iframe.contentWindow.print();
+                },
+                recargarPagina: function() {
+                    location.reload();
+                },
+                mostrarPagoOnlineEPagos: async function(infraccion) {
+                    if (!infraccion.numero_comprobante || infraccion.estado === 'VENCIDO') {
+                        await this.generateComprobanteRafam(infraccion)
+                    }
+                    if (!infraccion.epagos) {
+                        await this.getEPago(infraccion);
+                    }
+
+                    $('#pagoOnlineModal').modal('show');
+                    if (infraccion.epagos.acepta_pv) {
+                        this.montoAPagarEPagos = infraccion.monto_float;
+                    } else if (infraccion.epagos.acepta_pt) {
+                        this.montoAPagarEPagos = parseFloat(infraccion.monto.replace(/,/g, '.').replace('.', ''));
+                    }
+                    this.actaAPagarEPagos = infraccion.acta;
+                    this.comprobanteAPagarEPagos = infraccion.numero_comprobante;
+                    this.nro_comprobante_formateado = "075046" + infraccion.numero_comprobante.toString().padStart(9, '0')
+
+                    var url = this.baseUrl;
+                    var numero_operacion = this.nro_comprobante_formateado;
+
+                    $('#boton-credito').empty();
+                    $('#boton-debito').empty();
+
+                    ePagos.botonPago({
+                        "datosOperacion": {
+                            //Los datos de operacion: convenio, ok_url, error_url y monto_operacion son datos obligatorios.
+                            "convenio": "14080", //número de convenio asingado
+                            "ok_url": `${this.baseUrl}epagos/ok`, //url a donde redirigir en caso de éxito
+                            "error_url": `${this.baseUrl}epagos/error`, //url a donde redirigir en caso de error
+                            "monto_operacion": this.montoAPagarEPagos, //importe a cobrar
+                            "numero_operacion": this.nro_comprobante_formateado,
+                            "identificador_externo_2": this.actaAPagarEPagos,
+                            "identificador_externo_3": this.comprobanteAPagarEPagos,
+                        },
+                        "atributos": {
+
+                            "label": "Tarjeta de Crédito", // opcional
+                            "elemento_destino": "boton-credito", // opcional
+                            "className": "btn btn-block mb-1 text-white btn_tarj_credito", // opcional
+                            "style": "margin-top: 5px;",
+                            "estiloTooltip": {
+                                "font_size": "0px",
+                                "background_color": "transparent"
+                            }
+                        },
+
+                    });
+
+                    ePagos.botonPago({
+                        "datosOperacion": {
+                            //Los datos de operacion: convenio, ok_url, error_url y monto_operacion son datos obligatorios.
+                            "convenio": "13080", //número de convenio asingado
+                            "ok_url": `${this.baseUrl}epagos/ok`, //url a donde redirigir en caso de éxito
+                            "error_url": `${this.baseUrl}epagos/error`, //url a donde redirigir en caso de error
+                            "monto_operacion": this.montoAPagarEPagos, //importe a cobrar
+                            "numero_operacion": this.nro_comprobante_formateado,
+                            "identificador_externo_2": this.actaAPagarEPagos,
+                            "identificador_externo_3": this.comprobanteAPagarEPagos,
+                        },
+                        "atributos": {
+                            "label": "Tarjeta Débito", // opcional
+                            "elemento_destino": "boton-debito", // opcional
+                            "className": "btn btn-block mb-1 text-white btn_tarj_debito", // opcional
+                            "style": "margin-top: 5px;",
+                            "estiloTooltip": {
+                                "font_size": "0px",
+                                "background_color": "transparent"
+                            }
+                        }
+                    });
+
+                    resultado = "";
+                    axios.get(`${url}epagos/verificar_inicio_pago/${infraccion.acta}/operacion/${numero_operacion}`)
+                        .then((response) => {
+                            resultado = response.data.result;
+                            if (response.data.result != 'success') {
+
+                                $('#boton-credito button').each(function() {
+
+                                    let element = document.getElementById($(this)[0].id);
+
+                                    element.outerHTML = element.outerHTML;
+
+                                });
+                                $('#boton-debito button').each(function() {
+
+                                    let element = document.getElementById($(this)[0].id);
+
+                                    element.outerHTML = element.outerHTML;
+
+                                });
+                                $(".btn_tarj_credito, .btn_tarj_debito").off('click');
+                                $(".btn_tarj_credito, .btn_tarj_debito").unbind("click");
+                            }
+
+                        }).catch((error) => {
+                            resultado = 'error';
+
+                            $('#boton-credito button').each(function() {
+
+                                let element = document.getElementById($(this)[0].id);
+
+                                element.outerHTML = element.outerHTML;
+
+                            });
+                            $('#boton-debito button').each(function() {
+
+                                let element = document.getElementById($(this)[0].id);
+
+                                element.outerHTML = element.outerHTML;
+
+                            });
+
+                            $(".btn_tarj_credito, .btn_tarj_debito").off('click');
+                            $(".btn_tarj_credito, .btn_tarj_debito").unbind("click");
+                            return 'error';
+                            this.errorSistema = true;
+                        });
+
+
+
+                    $("#boton-credito,#boton-debito").mousedown(function(e) {
+                        e.preventDefault();
+                        e.stopImmediatePropagation();
+                        axios.post(`${url}epagos/iniciar_pago/${infraccion.acta}/operacion/${numero_operacion}`)
+                            .then((response) => {
+                                if (resultado == 'success') {
+                                    var btn = $(this);
+                                    //btn.trigger('click');
+                                    $('#pagoOnlineModal').modal('hide');
+                                    return true;
+                                } else {
+                                    $(this).prop('disabled', true);
+
+                                    $('#boton-credito button').each(function() {
+
+                                        let element = document.getElementById($(this)[0].id);
+
+                                        element.outerHTML = element.outerHTML;
+
+                                    });
+                                    $('#boton-debito button').each(function() {
+
+                                        let element = document.getElementById($(this)[0].id);
+
+                                        element.outerHTML = element.outerHTML;
+
+                                    });
+                                    $(".btn_tarj_credito, .btn_tarj_debito").off('click');
+                                    $(".btn_tarj_credito, .btn_tarj_debito").unbind("click");
+                                    $('#pagoOnlineModal').modal('hide');
+
+                                    if (resultado == 'iniciado') {
+                                        $('#pagoIniciadoModal').modal('show');
+
+                                        return false;
+                                    } else if (resultado == 'cancelada') {
+
+                                        $('#actaCanceladaErrorModal').modal('show');
+                                        this.errorSistema = true;
+                                        return false;
+                                    } else {
+                                        $('#pagoInicioErrorModal').modal('show');
+                                        this.errorSistema = true;
+                                        return false;
+                                    }
+                                }
+
+                            }).catch((error) => {
+                                resultado = 'error';
+
+                                $('#boton-credito button').each(function() {
+
+                                    let element = document.getElementById($(this)[0].id);
+
+                                    element.outerHTML = element.outerHTML;
+
+                                });
+                                $('#boton-debito button').each(function() {
+
+                                    let element = document.getElementById($(this)[0].id);
+
+                                    element.outerHTML = element.outerHTML;
+
+                                });
+
+                                $('#pagoOnlineModal').modal('hide');
+                                $('#pagoInicioErrorModal').modal('show');
+                                $(".btn_tarj_credito, .btn_tarj_debito").off('click');
+                                $(".btn_tarj_credito, .btn_tarj_debito").unbind("click");
+
+                                return 'error';
+                                this.errorSistema = true;
+                            });
+
+                    });
+
+                },
+                mostrarPagoOnlineNetPagos: function() {
+                    var actas = [];
+                    if (this.totalSeleccionado.length > 1) {
+                        $('#pagoUnicoNetPagos').modal('show');
+                        this.errorSistema = true;
+                        return false;
+                    }
+                    this.loadingNetPagos = true;
+                    for (let i = 0; i < this.totalSeleccionado.length; i++) {
+                        actas = [...actas, this.totalSeleccionado[i].acta];
+                    }
+
+                    axios.post(`${this.baseUrl}major/obtener-o-generar-comprobante`, {
+                        actas
+                    })
+                    .then(response => {
+                        let pagos = [];
+                        response.data.forEach(comprobante => {
+                            const infraccionEncontrada = this.totalSeleccionado.find(infraccion => infraccion.acta === comprobante.acta);
+                            
+                            if (infraccionEncontrada) {
+                                let netPagosAmount = infraccionEncontrada.acepta_pago_voluntario ? infraccionEncontrada.monto_float.toFixed(2) : infraccionEncontrada.monto_total_float.toFixed(2);
+                                let netPagosBarCode = comprobante.codigo_barras;
+                                let netPagosIdentificadorService = comprobante.major_numero_cuenta;
+                                let netPagosDetail = "Pago de tasas municipales - " + infraccionEncontrada.acta;
+                                pagos.push({
+                                    barcode: netPagosBarCode,
+                                    amount: netPagosAmount,
+                                    service: netPagosIdentificadorService,
+                                    detail: netPagosDetail
+                                });
+                            }
+                        });
+                        $('#pagoOnlineNetPagosModal').modal('show');
+                        Pnet.setPayments(pagos);
+                        this.loadingNetPagos = false;
+
+                    }).catch(error => {
+                        this.loadingNetPagos = false;
+                        $('#errorComprobanteNetPagos').modal('show');
+                        return 'error';
+                        this.errorSistema = true;
+                    });
+                   
+                    $(document).ready(function() {
+    
+                        $('#boton-net-pagos').on('click', function() {
+                            
+                            setTimeout(function() {
+                                $('#pagoOnlineNetPagosModal').modal('hide');
+                            }, 7000);
+                        });
+                    });
+                   
+                    
+                },
+                validEmail: function(email) {
+                    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                },
+                estaVencida: function(fechaVencimiento) {
+                   if (!fechaVencimiento) return false;
+
+                    const partes = fechaVencimiento.split("/"); 
+                    if (partes.length !== 3) return false;
+
+                    const fechaFormatoValido = `${partes[2]}-${partes[1]}-${partes[0]}`; 
+
+                    const fechaVenc = new Date(fechaFormatoValido);
+                    const hoy = new Date();
+                    hoy.setHours(0, 0, 0, 0);
+
+                    return !isNaN(fechaVenc) && fechaVenc < hoy;
+                },
+            },
+            computed: {
+                totalPages() {
+                    return Math.ceil(this.totalInfracciones / this.itemsPerPage);
+                },
+                hasMore() {
+                    return this.currentPage < this.totalPages;
+                },
+                totalMontoSeleccionado: function() {
+                    var total = 0;
+                    for (let i = 0; i < this.totalSeleccionado.length; i++) {
+                        if ((this.totalSeleccionado[i].estado == 'VIGENTE' || this.totalSeleccionado[i].estado == 'SIN RECIBO') && this.totalSeleccionado[i].acepta_pago_voluntario) {
+                            total = total + parseFloat(this.totalSeleccionado[i].pago_voluntario.replace(/\./g, '').replace(/,/g, '.'));
+                        } else if (this.totalSeleccionado[i].estado == 'VENCIDO' || !this.totalSeleccionado[i].acepta_pago_voluntario) {
+                            total = total + parseFloat(this.totalSeleccionado[i].monto.replace(/\./g, '').replace(/,/g, '.'));
+                        }
+                    }
+                    return parseFloat(total).toFixed(2)
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                        .replace(/[,.]/g, function(m) {
+                            return m === ',' ? '.' : ',';
+                        });
+                },
+                totalMonto: function() {
+                    var total = 0;
+                    var descuento_total_pv = 0;
+                    Object.entries(this.infracciones).forEach(([, infraccion], index) => {
+                        if (this.isBerisso || this.isCorrientes) {                            
+                            total = total + parseFloat(infraccion.monto.replace(/\./g, '').replace(/,/g, '.'));
+                            if ((infraccion.estado == 'VIGENTE') || (infraccion.estado == 'ACTA EN GESTION DE PAGO') || (infraccion.estado == 'SIN RECIBO')) {
+                                if (infraccion.acepta_pago_voluntario) {
+                                    descuento_total_pv = descuento_total_pv + (parseFloat(infraccion.monto_total_float) - parseFloat(infraccion.pago_voluntario.replace(/\./g, '').replace(/,/g, '.')));
+                                }    
+                            } 
+                        } else {                           
+                            total = total + infraccion.monto_total_float; //parseFloat(infraccion.monto.replace(/,/g, '.').replace('.', ''));
+                            if ((infraccion.estado == 'VIGENTE') || (infraccion.estado == 'ACTA EN GESTION DE PAGO') || (infraccion.estado == 'SIN RECIBO')) {
+                                if (infraccion.acepta_pago_voluntario) {
+                                    if (infraccion.monto_float === infraccion.monto_total_float) {                                        
+                                        descuento_total_pv = descuento_total_pv + (parseFloat(infraccion.monto_total_float) - parseFloat(infraccion.pago_voluntario.replace(/\./g, '').replace(/,/g, '.')));
+                                    } else {                                       
+                                        descuento_total_pv += (infraccion.monto_total_float - infraccion.monto_float);
+                                    }                                  
+                                }
+                            }
+                        }
+                    });
+                    var totalConDescuento = 0;
+                    console.log(" descuento pago otatal ppv:", descuento_total_pv);
+                    this.descuento = parseFloat(descuento_total_pv).toFixed(2)
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                        .replace(/[,.]/g, function(m) {
+                            return m === ',' ? '.' : ',';
+                        });
+                    
+                    if (descuento_total_pv != 0) {
+                        totalConDescuento = total - descuento_total_pv;
+                    }
+                     
+                    console.log("Total con descuento:", this.totalConDescuento);
+                    this.totalConDescuento = parseFloat(totalConDescuento).toFixed(2)
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                        .replace(/[,.]/g, function(m) {
+                            return m === ',' ? '.' : ',';
+                        });
+                    
+                    return parseFloat(total).toFixed(2)
+                        .toString()
+                        .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                        .replace(/[,.]/g, function(m) {
+                            return m === ',' ? '.' : ',';
+                        });
+                },
+                tieneActasSeleccionadas: function() {
+                    if (this.totalSeleccionado.length > 0) {
+                        return false;
+                    }
+
+                    return true;
+                },
+                isBerisso() {
+                        return ['berisso', 'berisso-local', 'berisso-dev', 'berisso-staging'].includes(this.municipio);
+                },
+                isCorrientes() {
+                        return ['corrientes', 'corrientes-local', 'corrientes-dev','corrientes-staging'].includes(this.municipio);
+                },
+                isEzeiza() {
+                        return ['ezeiza', 'ezeiza-local', 'ezeiza-dev','ezeiza-staging'].includes(this.municipio);
+                },
+                isLanus() {
+                    return ['lanus', 'lanus-local', 'lanus-dev', 'lanus-staging'].includes(this.municipio);
+                },
+                totalesConDescuento() {
+                    const sinDescuento = parseFloat(
+                        this.montoTotalResultTodasInfracciones.replace(/\./g, '').replace(',', '.')
+                    );
+                    const descuento = parseFloat(
+                        this.ahorroPV.replace(/\./g, '').replace(',', '.')
+                    );
+                    const resultado = sinDescuento - descuento;
+                    return new Intl.NumberFormat('es-AR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(resultado);
+                },
+                hayDescuento() {
+                    return this.ahorroPV != "0,00";
+                },
+                ahorroTotal() {
+                    const sinDescuento = parseFloat(
+                        this.montoTotalResultTodasInfracciones.replace(/\./g, '').replace(',', '.')
+                    );
+                    const descuento = parseFloat(
+                        this.ahorroPV.replace(/\./g, '').replace(',', '.')
+                    );
+                    const resultado = sinDescuento - descuento;
+                    const ahorro = sinDescuento - resultado;
+                    return new Intl.NumberFormat('es-AR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(ahorro);
+                },
+            },
+            watch: {
+                currentPage: function(newPage, oldPage) {
+                    this.todasSeleccionadas = false;
+                },
+                todasSeleccionadas: function(newState, oldState) {
+                    this.totalSeleccionado = [];
+                    if (newState == true) {
+                        Object.entries(this.infracciones).forEach(([, infraccion], index) => {
+                            if (infraccion.estado == 'RESOLVER_EN_JUZGADO' || infraccion.estado == 'ACTA EN GESTION DE PAGO') {
+                                return;
+                            }
+                            if (this.ePagos) {
+                                if (typeof infraccion.epagos !== 'undefined') {
+                                    if (infraccion.epagos.acepta_pv) {
+                                        this.totalSeleccionado = [...this.totalSeleccionado, infraccion];
+                                    } else if (infraccion.epagos.acepta_pt) {
+                                        this.totalSeleccionado = [...this.totalSeleccionado, infraccion];
+                                    }
+                                }
+                            } else {
+                                if ((infraccion.estado == 'VIGENTE') || (infraccion.estado == 'VENCIDO') || (infraccion.estado == 'SIN RECIBO')) {
+                                    this.totalSeleccionado = [...this.totalSeleccionado, infraccion];
+                                }
+                            }
+                        });
+                    }
+                }
+            },
+        });
+    </script>
+
+
+<div id="lightboxOverlay" tabindex="-1" class="lightboxOverlay" style="display: none;"></div><div id="lightbox" tabindex="-1" class="lightbox" style="display: none;"><div class="lb-outerContainer"><div class="lb-container"><img class="lb-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" alt=""><div class="lb-nav"><a class="lb-prev" aria-label="Previous image" href=""></a><a class="lb-next" aria-label="Next image" href=""></a></div><div class="lb-loader"><a class="lb-cancel"></a></div></div></div><div class="lb-dataContainer"><div class="lb-data"><div class="lb-details"><span class="lb-caption"></span><span class="lb-number"></span></div><div class="lb-closeContainer"><a class="lb-close"></a></div></div></div></div><div style="background-color: rgb(255, 255, 255); border: 1px solid rgb(204, 204, 204); box-shadow: rgba(0, 0, 0, 0.2) 2px 2px 3px; position: absolute; transition: visibility linear 0.3s, opacity 0.3s linear; opacity: 0; visibility: hidden; z-index: 2000000000; left: 0px; top: -10000px;"><div style="width: 100%; height: 100%; position: fixed; top: 0px; left: 0px; z-index: 2000000000; background-color: rgb(255, 255, 255); opacity: 0.05;"></div><div class="g-recaptcha-bubble-arrow" style="border: 11px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -11px; z-index: 2000000000;"></div><div class="g-recaptcha-bubble-arrow" style="border: 10px solid transparent; width: 0px; height: 0px; position: absolute; pointer-events: none; margin-top: -10px; z-index: 2000000000;"></div><div style="z-index: 2000000000; position: relative;"><iframe title="el desafmo de recaptcha caduca dentro de dos minutos" name="c-21siiqy5zzrj" frameborder="0" scrolling="no" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation allow-modals allow-popups-to-escape-sandbox allow-storage-access-by-user-activation" src="https://www.google.com/recaptcha/api2/bframe?hl=es-419&amp;v=xg_pWYS8-HRESiV6Rdg4aY_R&amp;k=6LcMR6gZAAAAACdq_y61ZBsOVCZVR2zb3lzk7rAZ&amp;bft=0dAFcWeA76eBgea5C8yU9E-ftJTNiiOA7I7yZWXMA-3BXQbO6p5QRKU8fu7ANOTkAj8q8b6qiLw19ItlVCQ1DWMxHfH0XzvPlXxw" style="width: 100%; height: 100%;"></iframe></div></div></body></html>

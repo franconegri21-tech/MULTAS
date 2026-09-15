@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+playwright
+reportlab
+requests
+pydantic
+python-dotenv
+urllib3
+beautifulsoup4

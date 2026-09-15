@@ -1,0 +1,96 @@
+{
+  "totalInfracciones": 2,
+  "totalRegistros": 2,
+  "totalPaginas": 1,
+  "infracciones": [
+    {
+      "id": 48026530,
+      "nroCausa": "02-003-02062821-3-00",
+      "nroActa": "02-003-02062821-3",
+      "dominio": "AD307EC",
+      "estaEnFecha": true,
+      "estaVencida": false,
+      "tieneLicenciaRetenida": false,
+      "tienePagoUnificadoVigente": false,
+      "esNADVencida": false,
+      "esNADEmitida": false,
+      "esMultaDI": false,
+      "sePuedePagarOnline": true,
+      "sePuedeImprimir": false,
+      "sePuedeImprimirOriginal": true,
+      "sePuedeGenerarDescargo": true,
+      "sePuedeGenerarProrroga": false,
+      "sePuedeAgregarEnCarrito": true,
+      "importeTotal": 340650.0,
+      "infracciones": [
+        {
+          "articulo": "22",
+          "descripcion": "No respetar luces de semáforo o barrera paso de paso a nivel"
+        }
+      ],
+      "autoridadAplicacion": "Juzgado Provincial La Plata",
+      "fechaEmision": 1785116609000,
+      "fechaVencimiento": 1790910000000,
+      "esPlanPago": false,
+      "estadoPlanDePago": null,
+      "cuotas": [],
+      "codigoBarra": "6660000003083899905139447408220261002340650001",
+      "estadoDescargo": null,
+      "tieneDescargo": false,
+      "descargo": null,
+      "debeDI": false,
+      "conApremio": false,
+      "fechaInfraccion": 1782147516000,
+      "estadoCausaPublico": {
+        "colorHex": "d9534f",
+        "descripcion": "CON DEUDA"
+      },
+      "error": null
+    },
+    {
+      "id": 48168159,
+      "nroCausa": "02-003-02084942-7-00",
+      "nroActa": "02-003-02084942-7",
+      "dominio": "AD307EC",
+      "estaEnFecha": true,
+      "estaVencida": false,
+      "tieneLicenciaRetenida": false,
+      "tienePagoUnificadoVigente": false,
+      "esNADVencida": false,
+      "esNADEmitida": false,
+      "esMultaDI": false,
+      "sePuedePagarOnline": true,
+      "sePuedeImprimir": false,
+      "sePuedeImprimirOriginal": true,
+      "sePuedeGenerarDescargo": true,
+      "sePuedeGenerarProrroga": false,
+      "sePuedeAgregarEnCarrito": true,
+      "importeTotal": 170325.0,
+      "infracciones": [
+        {
+          "articulo": "28",
+          "descripcion": "Por no respetar los límites reglamentarios de velocidad previstos."
+        }
+      ],
+      "autoridadAplicacion": "Juzgado Provincial La Plata",
+      "fechaEmision": 1786292039000,
+      "fechaVencimiento": 1791946800000,
+      "esPlanPago": false,
+      "estadoPlanDePago": null,
+      "cuotas": [],
+      "codigoBarra": "6660000003083899905140226370720261014170325004",
+      "estadoDescargo": null,
+      "tieneDescargo": false,
+      "descargo": null,
+      "debeDI": false,
+      "conApremio": false,
+      "fechaInfraccion": 1783458673000,
+      "estadoCausaPublico": {
+        "colorHex": "d9534f",
+        "descripcion": "CON DEUDA"
+      },
+      "error": null
+    }
+  ],
+  "esConsultaPorDominio": true
+}

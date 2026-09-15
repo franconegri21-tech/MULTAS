@@ -8,6 +8,5 @@ python-dotenv
 urllib3
 beautifulsoup4
 gunicorn
-
 python-multipart
-uvicorn
+jinja2
